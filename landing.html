@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>سكولار — نظام إدارة ومتابعة الطلاب للمدارس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  svg{display:block;}
+  .ico{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;}
+  .ico-lg{width:26px;height:26px;}
+
+  :root{
+    --indigo:#0F766E;--indigo-d:#0B5A53;--mint:#F59E0B;--violet:#10A99B;--rose:#F43F5E;--gold:#F59E0B;--green:#16A34A;
+    --ink:#0E1020;--body:#3A3D52;--muted:#7A7E96;--faint:#A9ADC4;
+    --bg:#F7F9F8;--panel:#FFFFFF;--wash:#F1F5F3;
+    --sh-sm:0 0 0 1px rgba(20,22,55,.05),0 1px 2px rgba(20,22,55,.04);
+    --sh:0 0 0 1px rgba(20,22,55,.05),0 18px 50px -16px rgba(40,42,80,.28);
+    --sh-glow:0 10px 30px -8px rgba(15,118,110,.45);
+    --font:"Tajawal",-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-.005em;background:var(--bg);overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1100px;margin:0 auto;padding:0 28px;}
+
+  .nav{position:sticky;top:0;z-index:30;background:rgba(251,251,254,.8);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,22,55,.05);}
+  .nav-in{display:flex;align-items:center;gap:16px;padding:16px 28px;max-width:1100px;margin:0 auto;}
+  .nav .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--indigo),var(--violet));display:grid;place-items:center;font-size:19px;color:#fff;box-shadow:var(--sh-glow);}
+  .nav b{font-size:18px;font-weight:900;}
+  .nav .links{display:flex;gap:6px;margin-right:20px;}
+  .nav .links a{padding:8px 14px;border-radius:10px;font-weight:700;font-size:14px;color:var(--body);}
+  .nav .links a:hover{background:var(--wash);}
+  .nav .cta{margin-right:auto;display:flex;gap:10px;align-items:center;}
+  .btn{font-family:var(--font);font-weight:800;font-size:14px;border:0;cursor:pointer;padding:11px 20px;border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet));box-shadow:var(--sh-glow);transition:.18s;display:inline-block;}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
+  .btn.ghost{background:#fff;color:var(--body);box-shadow:var(--sh-sm);}
+
+  .hero{position:relative;text-align:center;padding:70px 0 40px;overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 400px at 50% -10%,rgba(15,118,110,.14),transparent 60%),radial-gradient(500px 360px at 85% 20%,rgba(245,158,11,.1),transparent 60%);z-index:-1;}
+  .badge-top{display:inline-flex;align-items:center;gap:8px;background:#fff;box-shadow:var(--sh-sm);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:700;color:var(--body);margin-bottom:26px;}
+  .badge-top b{color:var(--indigo-d);}
+  .hero h1{font-size:54px;font-weight:900;line-height:1.12;letter-spacing:-.035em;max-width:760px;margin:0 auto;}
+  .hero h1 .grad{background:linear-gradient(120deg,var(--indigo),var(--violet) 50%,var(--mint));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{font-size:19px;color:var(--body);max-width:600px;margin:22px auto 0;line-height:1.7;font-weight:500;}
+  .hero .actions{display:flex;gap:14px;justify-content:center;margin-top:32px;}
+  .hero .trust{display:flex;gap:30px;justify-content:center;margin-top:40px;flex-wrap:wrap;}
+  .hero .trust b{font-size:30px;font-weight:900;display:block;letter-spacing:-.02em;}
+  .hero .trust span{color:var(--muted);font-size:13px;font-weight:600;}
+
+  .preview{max-width:980px;margin:48px auto 0;border-radius:22px;overflow:hidden;box-shadow:var(--sh);position:relative;transform:perspective(1600px) rotateX(2deg);}
+  .preview .bar{display:flex;align-items:center;gap:8px;padding:13px 18px;background:#fff;border-bottom:1px solid rgba(20,22,55,.05);}
+  .preview .bar .d{width:11px;height:11px;border-radius:50%;}
+  .preview .bar .url{margin-right:14px;background:var(--wash);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--muted);font-weight:600;}
+  .shot{display:flex;height:420px;background:var(--bg);}
+  .shot .side{width:200px;background:#fff;border-left:1px solid rgba(20,22,55,.05);padding:18px 12px;}
+  .shot .side .li{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--body);margin-bottom:3px;}
+  .shot .side .li.on{background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;}
+  .shot .body{flex:1;padding:20px;}
+  .shot .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+  .shot .k{background:#fff;border-radius:14px;padding:14px;box-shadow:var(--sh-sm);}
+  .shot .k b{font-size:24px;font-weight:900;}.shot .k span{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-top:3px;}
+  .shot .chart{background:#fff;border-radius:14px;padding:16px;box-shadow:var(--sh-sm);height:200px;}
+
+  .sec{padding:70px 0;}
+  .sec h2{font-size:38px;font-weight:900;text-align:center;letter-spacing:-.03em;}
+  .sec .lead{text-align:center;color:var(--muted);font-size:17px;font-weight:500;max-width:520px;margin:14px auto 0;}
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .feat{background:var(--panel);border-radius:18px;padding:26px;box-shadow:var(--sh-sm);transition:.25s;}
+  .feat:hover{transform:translateY(-5px);box-shadow:var(--sh);}
+  .feat .ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-size:25px;margin-bottom:16px;}
+  .feat h3{font-size:18px;font-weight:900;letter-spacing:-.01em;}
+  .feat p{color:var(--body);font-size:14px;font-weight:500;line-height:1.7;margin-top:9px;}
+
+  .ctaband{margin:0 28px 70px;max-width:1100px;margin-inline:auto;border-radius:28px;padding:56px;text-align:center;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--indigo),var(--violet) 60%,var(--mint));box-shadow:var(--sh-glow);}
+  .ctaband::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.13);top:-150px;left:-80px;}
+  .ctaband h2{font-size:36px;font-weight:900;letter-spacing:-.02em;position:relative;}
+  .ctaband p{font-size:17px;opacity:.92;margin:16px auto 0;max-width:500px;position:relative;line-height:1.6;}
+  .ctaband .btn{background:#fff;color:var(--indigo-d);margin-top:28px;position:relative;font-size:15px;padding:14px 28px;}
+
+  footer{padding:32px 28px;text-align:center;color:var(--faint);font-size:13px;font-weight:600;border-top:1px solid rgba(20,22,55,.05);}
+
+  @media(max-width:900px){
+    html,body{overflow-x:hidden;max-width:100%;}
+    .hero h1{font-size:34px;}
+    .feats{grid-template-columns:1fr;}
+    .nav .links{display:none;}
+    .shot .side{display:none;}
+    .container{padding:0 18px;}
+    .nav-in{gap:10px;}
+    .hero{padding:48px 0 32px;}
+    .hero p{font-size:16px;}
+
+    .preview{transform:none;margin-top:36px;}
+    .shot{height:auto;min-height:0;}
+    .shot .body{padding:16px;}
+    .shot .kpis{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .shot .chart{height:160px;}
+    .ctaband{margin:0 16px 48px;padding:40px 24px;}
+  }
+  @media(max-width:560px){
+    .hero h1{font-size:27px;}
+    .actions{flex-direction:column;align-items:stretch;}
+    .actions .btn{justify-content:center;}
+    .nav .cta .btn.ghost{display:none;}
+    .ctaband h2{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M21 9v5"/><path d="M7 11v4c0 1 2.5 2.5 5 2.5s5-1.5 5-2.5v-4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.5a3 3 0 010 5.6"/><path d="M19 19c0-2.2-1-3.8-2.5-4.6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></symbol>
+  <symbol id="i-teacher" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M4 21h16M9 21v-4h6v4M8 9h2M14 9h2M8 13h2M14 13h2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M6.5 15h4"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4l9 4V6l-9 4z"/><path d="M13 7.5a4 4 0 010 9"/><path d="M6 14v3.5a1.5 1.5 0 003 0V15"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19a1.5 1.5 0 003 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M3 12h11M7 8l-4 4 4 4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.8L19 9.5l-4.2 2.7L13 17l-1-4.8L7 9.5l4.2-1.7z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M5 14l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M5 10l7 7 7-7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M3 11h18M7 17v2M17 17v2"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M9 16h6M10 20h4M12 13v3"/></symbol>
+  <symbol id="i-tray" viewBox="0 0 24 24"><path d="M12 4v10M8 11l4 4 4-4"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+</svg>
+
+<nav class="nav">
+  <div class="nav-in">
+    <div class="logo"><svg class="ico ico-lg"><use href="#i-cap"/></svg></div><b>سكولار</b>
+    <div class="links"><a href="#features">المميزات</a><a href="#">الأسعار</a><a href="#">المدارس</a><a href="#">تواصل معنا</a></div>
+    <div class="cta"><a class="btn ghost" href="login.html">تسجيل الدخول</a><a class="btn" href="login.html">جرّب اللوحة</a></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="badge-top"><svg class="ico"><use href="#i-up"/></svg> <b>الجيل الجديد</b> · لإدارة المدارس في العراق</div>
+    <h1>منصّة واحدة لإدارة <span class="grad">مدرستك بالكامل</span> ومتابعة كل طالب.</h1>
+    <p>الدرجات، الحضور، الاختبارات، الرسوم، والتواصل مع أولياء الأمور — كل ذلك في نظام أنيق وسهل، يوفّر وقت إدارتك ويُبهر أولياء الأمور.</p>
+    <div class="actions"><a class="btn" href="login.html">جرّب اللوحة الآن</a></div>
+  </div>
+
+  <div class="container">
+    <div class="preview">
+      <div class="bar"><span class="d" style="background:#FF5F57"></span><span class="d" style="background:#FEBC2E"></span><span class="d" style="background:#28C840"></span><span class="url">scholar.iq/admin</span></div>
+      <div class="shot">
+        <div class="side">
+          <div class="li on"><svg class="ico"><use href="#i-grid"/></svg> نظرة عامة</div><div class="li"><svg class="ico"><use href="#i-users"/></svg> الطلاب</div><div class="li"><svg class="ico"><use href="#i-teacher"/></svg> المعلمون</div><div class="li"><svg class="ico"><use href="#i-building"/></svg> الصفوف</div><div class="li"><svg class="ico"><use href="#i-cal"/></svg> التقويم</div><div class="li"><svg class="ico"><use href="#i-card"/></svg> الرسوم</div>
+        </div>
+        <div class="body">
+          <div class="kpis">
+            <div class="k"><b>842</b><span>الطلاب</span></div><div class="k"><b>64</b><span>المعلمون</span></div><div class="k"><b>28</b><span>الصفوف</span></div><div class="k"><b>93%</b><span>الحضور</span></div>
+          </div>
+          <div class="chart">
+            <svg viewBox="0 0 640 170" width="100%" height="170">
+              <defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0F766E" stop-opacity=".25"/><stop offset="100%" stop-color="#0F766E" stop-opacity="0"/></linearGradient><linearGradient id="l" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#0F766E"/></linearGradient></defs>
+              <path d="M20,110 L130,70 L240,90 L350,50 L460,65 L560,30 L620,48 L620,160 L20,160 Z" fill="url(#a)"/>
+              <path d="M20,110 L130,70 L240,90 L350,50 L460,65 L560,30 L620,48" fill="none" stroke="url(#l)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g fill="#F59E0B" stroke="#fff" stroke-width="3"><circle cx="560" cy="30" r="6"/></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sec" id="features">
+  <div class="container">
+    <h2>كل ما تحتاجه مدرستك في مكان واحد</h2>
+    <p class="lead">مصمَّم خصيصًا للمدارس — بسيط بما يكفي لأي موظف، وقوي بما يكفي لإدارة مدرسة كاملة.</p>
+    <div class="feats">
+      <div class="feat"><div class="ic" style="background:rgba(15,118,110,.1)"><svg class="ico"><use href="#i-chart"/></svg></div><h3>الدرجات والتقييم</h3><p>رصد درجات الطلاب لكل مادة وتقييم تلقائي للمعدلات والتقديرات وعرض التطور.</p></div>
+      <div class="feat"><div class="ic" style="background:rgba(245,158,11,.1)"><svg class="ico"><use href="#i-cal"/></svg></div><h3>الحضور والغياب</h3><p>تسجيل الحضور اليومي بنقرة، وتنبيه فوري لأولياء الأمور عند الغياب أو التأخر.</p></div>
+      <div class="feat"><div class="ic" style="background:rgba(232,163,61,.12)"><svg class="ico"><use href="#i-doc"/></svg></div><h3>الاختبارات والكويزات</h3><p>إنشاء الاختبارات وجدولتها ومتابعة حالة التصحيح والمتوسطات لكل صف.</p></div>
+      <div class="feat"><div class="ic" style="background:rgba(242,92,122,.1)"><svg class="ico"><use href="#i-card"/></svg></div><h3>الرسوم الدراسية</h3><p>متابعة التحصيل والمدفوعات المتأخرة وإرسال التذكيرات تلقائيًا.</p></div>
+      <div class="feat"><div class="ic" style="background:rgba(16,169,155,.1)"><svg class="ico"><use href="#i-users"/></svg></div><h3>بوابة أولياء الأمور</h3><p>يتابع ولي الأمر أداء ابنه وحضوره وواجباته من جواله لحظة بلحظة.</p></div>
+      <div class="feat"><div class="ic" style="background:rgba(22,163,104,.1)"><svg class="ico"><use href="#i-doc"/></svg></div><h3>تقارير ذكية</h3><p>تقارير جاهزة للحضور والأداء والرسوم — قابلة للتصدير بصيغة PDF بنقرة.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ctaband" id="cta">
+  <h2>جاهز لتطوير إدارة مدرستك؟</h2>
+  <p>ابدأ اليوم وشاهد كيف يوفّر سكولار وقت إدارتك ويرفع رضا أولياء الأمور.</p>
+  <a class="btn" href="login.html">جرّب اللوحة الآن ←</a>
+</section>
+
+<footer>© 2026 سكولار · نظام إدارة ومتابعة الطلاب للمدارس · صُنع بكل اهتمام للمدارس العراقية</footer>
+<script src="app.js?v=1"></script>
+</body>
+</html>

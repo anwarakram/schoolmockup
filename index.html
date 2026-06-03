@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>سكولار — لوحة إدارة المدرسة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+
+    --indigo:#0F766E;
+    --indigo-d:#0B5A53;
+    --violet:#10A99B;
+    --mint:#F59E0B;
+    --peach:#FBBF5C;
+    --rose:#F43F5E;--gold:#F59E0B;
+    --green:#16A34A;--amber:#D97706;--red:#E11D48;
+    --ink:#0F1B18;
+    --body:#3F4A47;
+    --muted:#6B7672;
+    --faint:#9AA5A1;
+    --line:#E7ECEA;
+    --bg:#F7F9F8;
+    --panel:#FFFFFF;
+    --wash:#F1F5F3;
+
+    --sh-sm:0 0 0 1px rgba(15,27,24,.05),0 1px 1px rgba(15,60,50,.04),0 2px 3px rgba(15,60,50,.05);
+    --sh:0 0 0 1px rgba(15,27,24,.05),0 1px 2px rgba(15,60,50,.05),0 4px 8px rgba(15,60,50,.06),0 12px 24px -6px rgba(15,60,50,.12);
+    --sh-lg:0 0 0 1px rgba(15,27,24,.04),0 2px 6px rgba(15,60,50,.07),0 10px 24px -6px rgba(15,60,50,.12),0 24px 48px -12px rgba(15,60,50,.16);
+    --sh-glow:0 8px 24px -6px rgba(15,118,110,.4);
+    --r:16px;--font:"Tajawal",-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh;letter-spacing:-.005em;
+    background:radial-gradient(700px 420px at 100% -8%,rgba(15,118,110,.05),transparent 60%),radial-gradient(620px 420px at -6% 102%,rgba(245,158,11,.05),transparent 58%),var(--bg);background-attachment:fixed;}
+  a{color:inherit;text-decoration:none;}
+  svg{display:block;}
+  .ico{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  ::-webkit-scrollbar{width:9px;height:9px;}::-webkit-scrollbar-thumb{background:#d7e0dc;border-radius:9px;}
+  ::selection{background:rgba(15,118,110,.16);}
+
+  .sidebar{width:256px;flex:0 0 256px;background:#fff;border-left:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh;}
+  .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 22px;}
+  .brand .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(140deg,var(--indigo),var(--violet));display:grid;place-items:center;box-shadow:var(--sh-glow);}
+  .brand .logo svg{width:24px;height:24px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .brand b{font-size:18px;font-weight:900;letter-spacing:-.02em;}
+  .brand small{display:block;color:var(--muted);font-size:11px;font-weight:700;}
+  .nav-label{font-size:10px;font-weight:800;color:var(--faint);letter-spacing:.12em;padding:16px 12px 7px;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-weight:700;color:var(--body);cursor:pointer;transition:.16s;font-size:14px;position:relative;}
+  .nav-item .ico{width:19px;height:19px;color:var(--faint);transition:.16s;}
+  .nav-item:hover{background:var(--wash);color:var(--ink);}
+  .nav-item:hover .ico{color:var(--body);}
+  .nav-item.active{background:var(--wash);color:var(--indigo-d);}
+  .nav-item.active .ico{color:var(--indigo);}
+  .nav-item.active::before{content:"";position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:3px;background:var(--indigo);}
+  .nav-item .badge{margin-right:auto;background:var(--mint);color:#5a3a00;font-size:10.5px;font-weight:900;padding:1px 7px;border-radius:20px;}
+  .upsell{margin-top:auto;border-radius:14px;padding:16px;position:relative;overflow:hidden;background:linear-gradient(140deg,var(--indigo),var(--violet));color:#fff;box-shadow:var(--sh-glow);}
+  .upsell::after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.14);top:-44px;left:-24px;}
+  .upsell b{font-size:13.5px;font-weight:900;position:relative;}
+  .upsell p{font-size:11.5px;opacity:.92;margin:5px 0 11px;font-weight:500;line-height:1.6;position:relative;}
+  .upsell button{border:0;background:#fff;color:var(--indigo-d);font-family:var(--font);font-weight:800;font-size:12px;padding:8px 13px;border-radius:9px;cursor:pointer;position:relative;}
+  .side-foot{margin-top:auto;padding:10px;border-radius:12px;background:var(--wash);display:flex;align-items:center;gap:10px;}
+  .side-foot .av{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--indigo),var(--violet));display:grid;place-items:center;color:#fff;font-weight:900;font-size:12.5px;flex:0 0 34px;}
+
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .topbar{display:flex;align-items:center;gap:14px;padding:22px 32px 10px;position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 64%,transparent);backdrop-filter:blur(8px);}
+  .topbar .hi h1{font-size:23px;font-weight:900;letter-spacing:-.025em;}
+  .topbar .hi p{color:var(--muted);font-size:13px;font-weight:600;margin-top:3px;}
+  .search{margin-right:auto;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 13px;width:280px;color:var(--faint);box-shadow:var(--sh-sm);}
+  .search .ico{width:17px;height:17px;}
+  .search input{border:0;outline:0;background:transparent;font-family:var(--font);font-size:13.5px;width:100%;color:var(--ink);font-weight:500;}
+  .ibtn{width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;color:var(--body);cursor:pointer;box-shadow:var(--sh-sm);position:relative;transition:.18s;}
+  .ibtn:hover{transform:translateY(-2px);box-shadow:var(--sh);}
+  .ibtn .ico{width:18px;height:18px;}
+  .ibtn .dot{position:absolute;top:9px;left:10px;width:7px;height:7px;border-radius:50%;background:var(--mint);border:2px solid #fff;}
+
+  .content{padding:6px 32px 44px;display:flex;flex-direction:column;gap:16px;}
+  .page{display:none;flex-direction:column;gap:16px;animation:fade .5s cubic-bezier(.2,.8,.2,1);}
+  .page.show{display:flex;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh-sm);}
+  .card-head{display:flex;align-items:center;margin-bottom:14px;}
+  .card-head h3{font-size:16px;font-weight:800;letter-spacing:-.02em;}
+  .card-head .sub{color:var(--muted);font-size:12px;font-weight:600;margin-top:3px;}
+  .card-head .right{margin-right:auto;display:flex;gap:10px;align-items:center;}
+
+  .btn{font-family:var(--font);font-weight:800;font-size:13.5px;border:0;cursor:pointer;padding:9.5px 16px;border-radius:10px;color:#fff;background:var(--indigo);box-shadow:var(--sh-glow);transition:.18s;display:inline-flex;align-items:center;gap:7px;}
+  .btn:hover{transform:translateY(-2px);background:var(--indigo-d);}
+  .btn .ico{width:16px;height:16px;stroke:#fff;}
+  .btn.ghost{background:#fff;color:var(--body);border:1px solid var(--line);box-shadow:var(--sh-sm);}
+  .btn.ghost .ico{stroke:var(--body);}
+  .btn.amber{background:var(--mint);color:#5a3a00;box-shadow:0 8px 24px -6px rgba(245,158,11,.4);}
+  .btn.amber:hover{background:#e08e0a;}
+  .btn.amber .ico{stroke:#5a3a00;}
+  .seg{display:flex;background:var(--wash);border-radius:10px;padding:3px;gap:2px;position:relative;}
+  .seg button{border:0;background:transparent;font-family:var(--font);font-weight:700;font-size:12px;color:var(--muted);padding:6px 13px;border-radius:7px;cursor:pointer;position:relative;z-index:1;}
+  .seg button.on{color:var(--ink);}
+
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:14px;}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-sm);transition:.26s;animation:rise .55s both;position:relative;overflow:hidden;}
+  .tile:hover{transform:translateY(-3px);box-shadow:var(--sh);}
+  .tile:nth-child(2){animation-delay:.05s;}.tile:nth-child(3){animation-delay:.1s;}.tile:nth-child(4){animation-delay:.15s;}.tile:nth-child(5){animation-delay:.2s;}
+
+  .hero{grid-column:span 2;grid-row:span 2;background:linear-gradient(145deg,var(--indigo),var(--indigo-d));color:#fff;padding:26px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;border:0;}
+  .hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);top:-100px;left:-60px;}
+  .hero .htop{display:flex;align-items:center;gap:10px;position:relative;}
+  .hero .htop .hic{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.16);display:grid;place-items:center;}
+  .hero .htop .hic .ico{width:20px;height:20px;stroke:#fff;}
+  .hero .htop span{font-size:13.5px;font-weight:700;opacity:.92;}
+  .hero .hnum{font-size:64px;font-weight:900;letter-spacing:-.04em;line-height:1;margin:8px 0 2px;position:relative;direction:ltr;text-align:right;}
+  .hero .hsub{display:flex;align-items:center;gap:10px;position:relative;font-size:13px;font-weight:600;opacity:.95;}
+  .hero .hpill{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:20px;font-weight:800;direction:ltr;}
+  .hero .spark{position:relative;margin-top:14px;}
+
+  .kpi{padding:18px 20px;}
+  .kpi .ktop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .kpi .kic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;}
+  .kpi .kic .ico{width:19px;height:19px;}
+  .kic.c-emerald{background:rgba(15,118,110,.1);color:var(--indigo);}
+  .kic.c-amber{background:rgba(245,158,11,.12);color:var(--amber);}
+  .kic.c-rose{background:rgba(244,63,94,.1);color:var(--rose);}
+  .kpi .trend{font-size:11.5px;font-weight:800;padding:3px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;direction:ltr;}
+  .trend .ico{width:12px;height:12px;stroke-width:2.4;}
+  .t-up{background:rgba(22,163,74,.1);color:var(--green);}
+  .t-down{background:rgba(225,29,72,.1);color:var(--red);}
+  .kpi .knum{font-size:32px;font-weight:900;letter-spacing:-.03em;line-height:1;direction:ltr;text-align:right;}
+  .kpi .klbl{color:var(--muted);font-size:12.5px;font-weight:600;margin-top:6px;}
+
+  .row2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start;}
+  .row2b{display:grid;grid-template-columns:1fr 1.1fr;gap:16px;align-items:start;}
+
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:right;padding:0 12px 10px;font-size:11px;font-weight:800;color:var(--faint);letter-spacing:.03em;}
+  td{padding:10px 12px;font-size:13.5px;font-weight:600;border-top:1px solid var(--line);}
+  tbody tr{transition:.15s;}tbody tr:hover{background:var(--wash);}
+  .person{display:flex;align-items:center;gap:11px;}
+  .av{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:12.5px;flex:0 0 36px;direction:ltr;}
+  .av-sub{color:var(--muted);font-size:11.5px;font-weight:500;}
+  .badge-g{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:4px 10px;border-radius:9px;font-weight:900;font-size:12.5px;direction:ltr;}
+  .g-hi{background:rgba(22,163,74,.1);color:var(--green);}.g-mid{background:rgba(217,119,6,.12);color:var(--amber);}.g-lo{background:rgba(225,29,72,.1);color:var(--red);}
+  .pill{display:inline-block;padding:4px 11px;border-radius:20px;font-size:11.5px;font-weight:800;}
+  .p-ok{background:rgba(22,163,74,.1);color:var(--green);}.p-warn{background:rgba(217,119,6,.12);color:var(--amber);}.p-bad{background:rgba(225,29,72,.1);color:var(--red);}
+
+  .legend{display:flex;flex-direction:column;gap:12px;}
+  .legend span{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--body);}
+  .legend i{width:11px;height:11px;border-radius:4px;}
+  .legend b{margin-right:auto;color:var(--ink);font-weight:800;direction:ltr;}
+  .donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;}
+  .donut-center b{font-size:26px;font-weight:900;direction:ltr;}.donut-center small{display:block;color:var(--muted);font-size:11px;font-weight:600;}
+
+  .selectbox{font-family:var(--font);font-weight:700;font-size:12.5px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--body);background:#fff;cursor:pointer;outline:0;box-shadow:var(--sh-sm);}
+  .ginput{width:60px;text-align:center;font-family:var(--font);font-weight:800;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px;outline:0;transition:.2s;direction:ltr;}
+  .ginput:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+
+  .ccards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .ccard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--sh-sm);transition:.26s;position:relative;overflow:hidden;}
+  .ccard::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:3px;background:var(--indigo);}
+  .ccard:hover{transform:translateY(-3px);box-shadow:var(--sh);}
+  .ccard h3{font-size:17px;font-weight:900;}.ccard .t{color:var(--muted);font-size:12.5px;font-weight:500;margin-top:3px;}
+  .ccard .stat{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--muted);margin-top:10px;}.ccard .stat b{color:var(--ink);direction:ltr;}
+  .prog{width:100%;height:7px;background:var(--wash);border-radius:8px;overflow:hidden;margin-top:8px;}
+  .prog i{display:block;height:100%;background:var(--indigo);border-radius:8px;}
+
+  .ann{display:flex;gap:13px;padding:14px 0;border-top:1px solid var(--line);}
+  .ann:first-child{border-top:0;}
+  .ann .aic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:0 0 40px;}
+  .ann .aic .ico{width:19px;height:19px;}
+  .a-em{background:rgba(15,118,110,.1);color:var(--indigo);}.a-am{background:rgba(245,158,11,.12);color:var(--amber);}.a-ro{background:rgba(244,63,94,.1);color:var(--rose);}
+  .ann b{font-weight:800;font-size:14px;}.ann p{color:var(--body);font-size:12.5px;font-weight:500;margin-top:2px;}
+  .ann time{color:var(--faint);font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .compose textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:12px;padding:13px;font-family:var(--font);font-size:13.5px;resize:vertical;outline:0;font-weight:500;background:var(--wash);color:var(--ink);}
+  .compose textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(15,118,110,.1);background:#fff;}
+
+  .briefing{display:flex;align-items:center;gap:15px;padding:18px 20px;border-radius:var(--r);position:relative;overflow:hidden;
+    background:linear-gradient(110deg,rgba(15,118,110,.08),rgba(245,158,11,.07));border:1px solid var(--line);box-shadow:var(--sh-sm);animation:rise .5s both;}
+  .briefing::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(15,118,110,.14),transparent 70%);top:-80px;left:-30px;}
+  .brief-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#fff;box-shadow:var(--sh-sm);flex:0 0 44px;position:relative;color:var(--indigo);}
+  .brief-ic .ico{width:22px;height:22px;}
+  .brief-body{flex:1;position:relative;}
+  .brief-top{display:flex;align-items:center;gap:9px;margin-bottom:3px;}
+  .brief-top b{font-size:14.5px;font-weight:900;}
+  .brief-tag{font-size:10px;font-weight:800;color:var(--indigo-d);background:#fff;padding:3px 9px;border-radius:20px;box-shadow:var(--sh-sm);}
+  .brief-body p{font-size:13px;font-weight:500;color:var(--body);line-height:1.7;}
+  .brief-body p b{color:var(--ink);font-weight:800;direction:ltr;}
+  .brief-act{flex:0 0 auto;border:0;cursor:pointer;font-family:var(--font);font-weight:800;font-size:12.5px;color:#fff;background:var(--indigo);padding:9px 15px;border-radius:10px;box-shadow:var(--sh-glow);transition:.18s;position:relative;}
+  .brief-act:hover{transform:translateY(-2px);background:var(--indigo-d);}
+
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;}
+  .cal .dow{text-align:center;font-size:11px;font-weight:800;color:var(--faint);padding-bottom:6px;}
+  .cal .day{aspect-ratio:1;border-radius:11px;background:var(--wash);padding:8px;font-size:12.5px;font-weight:700;position:relative;color:var(--body);}
+  .cal .day.out{opacity:.34;}
+  .cal .dow.we{color:var(--faint);}
+  .cal .day.we{background:repeating-linear-gradient(135deg,var(--wash),var(--wash) 6px,#fff 6px,#fff 12px);color:var(--faint);}
+  .cal .day.today{background:var(--indigo);color:#fff;box-shadow:var(--sh-glow);}
+  .cal .day .ev{position:absolute;bottom:7px;right:7px;left:7px;font-size:9px;font-weight:800;border-radius:5px;padding:2px 4px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev-i{background:rgba(15,118,110,.14);color:var(--indigo-d);}.ev-t{background:rgba(245,158,11,.16);color:#8a5a00;}.ev-a{background:rgba(217,119,6,.16);color:#8a5a00;}.ev-c{background:rgba(244,63,94,.13);color:#a11d3a;}
+  .cal .day.today .ev{background:rgba(255,255,255,.22);color:#fff;}
+  .evlist .ev-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);}
+  .evlist .ev-row:first-child{border-top:0;}
+  .evlist .dt{width:46px;text-align:center;border-radius:11px;padding:7px 0;flex:0 0 46px;}
+  .evlist .dt b{display:block;font-size:17px;font-weight:900;line-height:1;direction:ltr;}.evlist .dt span{font-size:10.5px;font-weight:700;}
+  .att{display:flex;gap:6px;}
+  .att button{border:0;background:var(--wash);border-radius:9px;width:38px;height:36px;font-size:15px;cursor:pointer;transition:.15s;box-shadow:inset 0 0 0 1px var(--line);}
+  .att button.on.pres{background:var(--green);color:#fff;box-shadow:none;}
+  .att button.on.late{background:var(--amber);color:#fff;box-shadow:none;}
+  .att button.on.abs{background:var(--red);color:#fff;box-shadow:none;}
+
+  .chartwrap{position:relative;}
+  .chartwrap .pts circle{cursor:pointer;}
+  .chart-tip{position:absolute;pointer-events:none;transform:translate(50%,-115%);background:var(--ink);color:#fff;border-radius:10px;padding:8px 11px;box-shadow:var(--sh-lg);font-size:11.5px;font-weight:700;white-space:nowrap;z-index:5;transition:opacity .12s;}
+  .chart-tip b{font-size:14px;font-weight:900;direction:ltr;display:block;}
+  .chart-tip .tprev{color:#cbd5ce;font-weight:600;font-size:10.5px;margin-top:2px;direction:ltr;}
+  .chart-tip::after{content:"";position:absolute;bottom:-5px;right:calc(50% - 5px);width:10px;height:10px;background:var(--ink);transform:rotate(45deg);}
+
+  }100%{background-position:0 0;}}
+
+  a:focus-visible,button:focus-visible,.nav-item:focus-visible,input:focus-visible,select:focus-visible,.tile:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:8px;}
+
+  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;color:var(--muted);}
+  .empty svg{width:40px;height:40px;stroke:var(--faint);margin-bottom:12px;}
+  .empty b{font-size:14px;font-weight:800;color:var(--body);}
+  .empty p{font-size:12.5px;font-weight:500;margin-top:4px;}
+
+  @media(max-width:1100px){.bento{grid-template-columns:repeat(2,1fr);}.hero{grid-column:span 2;grid-row:span 1;}.row2,.row2b,.ccards{grid-template-columns:1fr;}}
+
+  @media(max-width:900px){
+    html,body{overflow-x:hidden;max-width:100%;}
+    body{display:block;}
+    .sidebar{width:auto;flex:none;height:auto;position:sticky;top:0;z-index:30;flex-direction:row;align-items:center;gap:6px;
+      padding:10px 14px;border-left:0;border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+      background:rgba(255,255,255,.92);backdrop-filter:blur(12px);}
+    .sidebar::-webkit-scrollbar{display:none;}
+    .sidebar .brand{padding:0 4px 0 8px;gap:8px;flex:0 0 auto;border-left:1px solid var(--line);margin-left:4px;}
+    .sidebar .brand .logo{width:36px;height:36px;}
+    .sidebar .brand b{font-size:16px;}
+    .sidebar .brand small{display:none;}
+    .sidebar .nav-label,.sidebar .side-foot{display:none;}
+    .nav-item{flex:0 0 auto;white-space:nowrap;padding:8px 14px;font-size:13px;gap:7px;border-radius:999px;background:var(--wash);}
+    .nav-item .ico{width:16px;height:16px;}
+    .nav-item.active{background:var(--indigo);color:#fff;box-shadow:0 6px 16px -6px rgba(15,118,110,.5);}
+    .nav-item.active .ico{stroke:#fff;}
+    .nav-item.active::before{display:none;}
+    .nav-item .badge{background:var(--mint);color:#5a3a00;}
+    .main{min-height:auto;}
+    .topbar{padding:16px 18px 8px;flex-wrap:wrap;}
+    .topbar .hi h1{font-size:19px;}
+    .topbar .hi p{font-size:12px;}
+    .search{width:100%;margin-right:0;order:3;}
+    .content{padding:6px 16px 40px;}
+    .kpis{grid-template-columns:repeat(2,1fr);}
+
+    .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto;gap:12px;}
+    .bento .hero{grid-column:1 / -1;}
+    .tile,.card,.hero{min-width:0;max-width:100%;}
+    .hero{grid-row:auto;padding:22px;}
+    .hero .hnum{font-size:46px;}
+    .kpi{padding:15px 16px;}
+    .kpi .ktop{margin-bottom:10px;}
+    .kpi .knum{font-size:26px;}
+    .card-head{flex-wrap:wrap;gap:10px;}
+    .card-head .right{margin-right:0;flex-wrap:wrap;}
+
+    .card{overflow:visible;}
+    table{min-width:0;width:100%;border-collapse:separate;}
+    table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+    table,table tbody{display:block;}
+    table tbody tr{display:block;border:1px solid var(--line);border-radius:14px;
+      padding:12px 14px;margin-bottom:10px;background:var(--panel);box-shadow:var(--sh-sm);}
+    table tbody td{display:flex;align-items:center;justify-content:space-between;gap:14px;
+      border:0!important;padding:7px 0;text-align:left;}
+    table tbody td+td{border-top:1px solid rgba(20,22,55,.05)!important;}
+
+    table tbody td::before{content:attr(data-label);color:var(--muted);font-weight:700;font-size:12px;
+      flex:0 0 auto;text-align:right;}
+
+    table tbody td:first-child{font-weight:800;font-size:14.5px;padding-top:0;}
+    table tbody td:first-child::before{display:none;}
+    table tbody td .person{gap:10px;}
+    table tbody td .btn{margin:0;}
+
+    #att-table tbody td .att{justify-content:flex-end;}
+  }
+  @media(max-width:480px){
+    .kpis{grid-template-columns:1fr;}
+    .topbar .hi h1{font-size:17px;}
+    .hero .hnum{font-size:40px;}
+    .seg{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;}
+    .seg::-webkit-scrollbar{display:none;}
+    .seg button{flex:0 0 auto;white-space:nowrap;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M21 9v5"/><path d="M7 11v4c0 1 2.5 2.5 5 2.5s5-1.5 5-2.5v-4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.5a3 3 0 010 5.6"/><path d="M19 19c0-2.2-1-3.8-2.5-4.6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></symbol>
+  <symbol id="i-teacher" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M4 21h16M9 21v-4h6v4M8 9h2M14 9h2M8 13h2M14 13h2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M6.5 15h4"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4l9 4V6l-9 4z"/><path d="M13 7.5a4 4 0 010 9"/><path d="M6 14v3.5a1.5 1.5 0 003 0V15"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19a1.5 1.5 0 003 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M3 12h11M7 8l-4 4 4 4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.8L19 9.5l-4.2 2.7L13 17l-1-4.8L7 9.5l4.2-1.7z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M5 14l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M5 10l7 7 7-7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M3 11h18M7 17v2M17 17v2"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M9 16h6M10 20h4M12 13v3"/></symbol>
+  <symbol id="i-tray" viewBox="0 0 24 24"><path d="M12 4v10M8 11l4 4 4-4"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+</svg>
+
+<aside class="sidebar">
+  <div class="brand"><div class="logo"><svg viewBox="0 0 24 24"><use href="#i-cap"/></svg></div><div><b>سكولار</b><small>إدارة المدرسة</small></div></div>
+  <div class="nav-label">الإدارة</div>
+  <div class="nav-item active" tabindex="0" data-p="overview"><svg class="ico"><use href="#i-grid"/></svg> نظرة عامة</div>
+  <div class="nav-item" tabindex="0" data-p="students"><svg class="ico"><use href="#i-users"/></svg> الطلاب</div>
+  <div class="nav-item" tabindex="0" data-p="attendance"><svg class="ico"><use href="#i-cal"/></svg> الحضور والغياب</div>
+  <div class="nav-item" tabindex="0" data-p="teachers"><svg class="ico"><use href="#i-teacher"/></svg> المعلمون والموظفون</div>
+  <div class="nav-item" tabindex="0" data-p="classes"><svg class="ico"><use href="#i-building"/></svg> الصفوف</div>
+  <div class="nav-label">الأكاديمي</div>
+  <div class="nav-item" tabindex="0" data-p="calendar"><svg class="ico"><use href="#i-clock"/></svg> التقويم والفعاليات</div>
+  <div class="nav-item" tabindex="0" data-p="fees"><svg class="ico"><use href="#i-card"/></svg> الرسوم الدراسية</div>
+  <div class="nav-item" tabindex="0" data-p="announce"><svg class="ico"><use href="#i-mega"/></svg> الإعلانات <span class="badge">3</span></div>
+  <div class="nav-item" tabindex="0" data-p="reports"><svg class="ico"><use href="#i-doc"/></svg> التقارير</div>
+  <div class="side-foot"><div class="av">حي</div><div style="line-height:1.3"><b style="font-size:13px">أ. حسن يوسف</b><br><small style="color:var(--muted);font-weight:600;font-size:11.5px">مدير المدرسة</small></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="hi"><h1 id="pageTitle">مرحبًا، أ. حسن 👋</h1><p id="pageSub">مدرسة النور الدولية · الأحد 1 حزيران 2026</p></div>
+    <label class="search"><svg class="ico"><use href="#i-search"/></svg><input placeholder="ابحث عن طالب، معلم، صف…" /></label>
+    <button class="ibtn"><svg class="ico"><use href="#i-bell"/></svg><span class="dot"></span></button>
+    <a href="login.html" class="ibtn" title="تسجيل الخروج"><svg class="ico"><use href="#i-logout"/></svg></a>
+  </header>
+
+  <div class="content">
+
+    <section class="page show" id="overview">
+      <div class="bento">
+        <div class="tile hero">
+          <div>
+            <div class="htop"><div class="hic"><svg class="ico"><use href="#i-cal"/></svg></div><span>نسبة الحضور اليوم</span></div>
+            <div class="hnum"><span class="num">93</span>%</div>
+            <div class="hsub"><span class="hpill">↑ 1.8%</span><span>أعلى من أمس · 229 من 246 طالبًا</span></div>
+          </div>
+          <div class="spark">
+            <svg viewBox="0 0 480 70" width="100%" height="70" preserveAspectRatio="none">
+              <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".35"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,50 L80,38 L160,44 L240,26 L320,32 L400,16 L480,24 L480,70 L0,70 Z" fill="url(#sg)"/>
+              <path d="M0,50 L80,38 L160,44 L240,26 L320,32 L400,16 L480,24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="tile kpi">
+          <div class="ktop"><div class="kic c-emerald"><svg class="ico"><use href="#i-users"/></svg></div><span class="trend t-up"><svg class="ico"><use href="#i-up"/></svg>4.2%</span></div>
+          <div class="knum"><span class="num">246</span></div><div class="klbl">إجمالي الطلاب</div>
+        </div>
+        <div class="tile kpi">
+          <div class="ktop"><div class="kic c-amber"><svg class="ico"><use href="#i-teacher"/></svg></div><span class="trend t-up"><svg class="ico"><use href="#i-up"/></svg>3</span></div>
+          <div class="knum"><span class="num">24</span></div><div class="klbl">المعلمون والموظفون</div>
+        </div>
+        <div class="tile kpi">
+          <div class="ktop"><div class="kic c-emerald"><svg class="ico"><use href="#i-building"/></svg></div></div>
+          <div class="knum"><span class="num">12</span></div><div class="klbl">عدد الصفوف</div>
+        </div>
+        <div class="tile kpi">
+          <div class="ktop"><div class="kic c-rose"><svg class="ico"><use href="#i-card"/></svg></div><span class="trend t-down"><svg class="ico"><use href="#i-down"/></svg>6</span></div>
+          <div class="knum"><span class="num">34</span></div><div class="klbl">رسوم متأخرة</div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>حضور المدرسة</h3><div class="sub">مقارنة هذا الأسبوع بالأسبوع الماضي</div></div>
+            <div class="right" style="display:flex;align-items:center;gap:14px">
+              <div style="display:flex;gap:12px;font-size:11.5px;font-weight:700;color:var(--muted)">
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:14px;height:3px;border-radius:2px;background:#0F766E;display:inline-block"></i>هذا الأسبوع</span>
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:14px;height:3px;border-radius:2px;background:#CBD5CE;display:inline-block"></i>الماضي</span>
+              </div>
+              <div class="seg"><button class="on">أسبوع</button><button>شهر</button><button>فصل</button></div>
+            </div>
+          </div>
+          <div class="chartwrap" data-chart>
+            <svg viewBox="0 0 680 250" width="100%" height="250" font-family="Tajawal">
+              <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0F766E" stop-opacity=".16"/><stop offset="100%" stop-color="#0F766E" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="#E7ECEA" stroke-width="1" font-size="10.5" fill="#9AA5A1" font-weight="700">
+                <line x1="44" y1="30" x2="648" y2="30"/><text x="650" y="34" text-anchor="start">100%</text>
+                <line x1="44" y1="84" x2="648" y2="84"/><text x="650" y="88" text-anchor="start">90%</text>
+                <line x1="44" y1="138" x2="648" y2="138"/><text x="650" y="142" text-anchor="start">80%</text>
+                <line x1="44" y1="192" x2="648" y2="192"/><text x="650" y="196" text-anchor="start">70%</text>
+              </g>
+
+              <path d="M70,128 L185,140 L300,112 L416,124 L531,96 L646,118" fill="none" stroke="#CBD5CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 6"/>
+
+              <path d="M70,100 L185,116 L300,72 L416,86 L531,50 L646,72 L646,210 L70,210 Z" fill="url(#area)"/>
+              <path d="M70,100 L185,116 L300,72 L416,86 L531,50 L646,72" fill="none" stroke="#0F766E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <g class="pts">
+                <circle cx="70"  cy="100" r="13" fill="transparent" data-x="الأحد"   data-v="93%" data-prev="89%"/>
+                <circle cx="185" cy="116" r="13" fill="transparent" data-x="الإثنين" data-v="90%" data-prev="87%"/>
+                <circle cx="300" cy="72"  r="13" fill="transparent" data-x="الثلاثاء" data-v="96%" data-prev="92%"/>
+                <circle cx="416" cy="86"  r="13" fill="transparent" data-x="الأربعاء" data-v="94%" data-prev="90%"/>
+                <circle cx="531" cy="50"  r="13" fill="transparent" data-x="الخميس"  data-v="97%" data-prev="93%"/>
+                <circle cx="646" cy="72"  r="13" fill="transparent" data-x="اليوم"   data-v="93%" data-prev="91%"/>
+              </g>
+              <g class="dots" fill="#fff" stroke="#0F766E" stroke-width="2.5" pointer-events="none">
+                <circle cx="70" cy="100" r="3.5"/><circle cx="185" cy="116" r="3.5"/><circle cx="300" cy="72" r="3.5"/><circle cx="416" cy="86" r="3.5"/><circle cx="531" cy="50" r="3.5"/><circle cx="646" cy="72" r="3.5"/>
+              </g>
+              <g font-size="11.5" fill="#6B7672" font-weight="700" text-anchor="middle"><text x="70" y="234">الأحد</text><text x="185" y="234">الإثنين</text><text x="300" y="234">الثلاثاء</text><text x="416" y="234">الأربعاء</text><text x="531" y="234">الخميس</text><text x="646" y="234">اليوم</text></g>
+            </svg>
+            <div class="chart-tip" hidden></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>توزيع المراحل</h3><div class="sub">246 طالبًا · 12 شعبة</div></div></div>
+          <div style="display:flex;align-items:center;gap:24px;justify-content:center;padding:6px 0 4px">
+            <div style="position:relative;width:150px;height:150px;flex:0 0 150px">
+              <svg viewBox="0 0 42 42" width="150" height="150" style="transform:rotate(-90deg)">
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#F1F5F3" stroke-width="5"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#0F766E" stroke-width="5" stroke-dasharray="42 58" stroke-dashoffset="0" stroke-linecap="round"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#F59E0B" stroke-width="5" stroke-dasharray="34 66" stroke-dashoffset="-42" stroke-linecap="round"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#94A3B8" stroke-width="5" stroke-dasharray="24 76" stroke-dashoffset="-76" stroke-linecap="round"/>
+              </svg>
+              <div class="donut-center"><div><b>246</b><small>طالب</small></div></div>
+            </div>
+            <div class="legend">
+              <span><i style="background:#0F766E"></i> الابتدائي <b>42%</b></span>
+              <span><i style="background:#F59E0B"></i> المتوسط <b>34%</b></span>
+              <span><i style="background:#94A3B8"></i> الثانوي <b>24%</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2b">
+        <div class="card">
+          <div class="card-head"><div><h3>الأداء حسب المرحلة</h3><div class="sub">متوسط الدرجات</div></div></div>
+          <svg viewBox="0 0 340 220" width="100%" height="220" font-family="Tajawal">
+            <g stroke="#E7ECEA" stroke-width="1" font-size="10" fill="#9AA5A1" font-weight="700"><line x1="40" y1="24" x2="330" y2="24"/><text x="332" y="28" text-anchor="start">100</text><line x1="40" y1="84" x2="330" y2="84"/><text x="332" y="88" text-anchor="start">70</text><line x1="40" y1="144" x2="330" y2="144"/><text x="332" y="148" text-anchor="start">40</text></g>
+            <g fill="#0F766E"><rect x="62" y="50" width="44" height="124" rx="8"/><rect x="150" y="78" width="44" height="96" rx="8"/><rect x="238" y="62" width="44" height="112" rx="8"/></g>
+            <g font-size="12" fill="#3F4A47" font-weight="700" text-anchor="middle"><text x="84" y="192">الابتدائي</text><text x="172" y="192">المتوسط</text><text x="260" y="192">الثانوي</text></g>
+            <g font-size="13" fill="#0F1B18" font-weight="900" text-anchor="middle"><text x="84" y="44">87</text><text x="172" y="72">79</text><text x="260" y="56">83</text></g>
+          </svg>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>المهام الإدارية</h3><div class="sub">تحتاج إجراءً</div></div><div class="right"><button class="btn ghost">الكل</button></div></div>
+          <table><tbody>
+            <tr><td><div class="person"><span class="av" style="background:#F59E0B">12</span><div>طلبات تسجيل جديدة<div class="av-sub">بانتظار الموافقة</div></div></div></td><td style="text-align:left"><span class="pill p-warn">مراجعة</span></td></tr>
+            <tr><td><div class="person"><span class="av" style="background:#F43F5E">34</span><div>رسوم متأخرة<div class="av-sub">أولياء أمور</div></div></div></td><td style="text-align:left"><span class="pill p-bad">عاجل</span></td></tr>
+            <tr><td><div class="person"><span class="av" style="background:#0F766E">✓</span><div>اعتماد جدول الاختبارات<div class="av-sub">الفصل الثاني</div></div></div></td><td style="text-align:left"><span class="pill p-ok">جاهز</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="students">
+      <div class="card-head" style="margin:0"><div><h3 style="font-size:20px">الطلاب</h3><div class="sub" id="students-count">—</div></div>
+        <div class="right" style="display:flex;gap:10px">
+          <select class="selectbox" id="grade-filter"><option value="">كل الصفوف</option></select>
+          <button class="btn"><svg class="ico"><use href="#i-plus"/></svg> تسجيل طالب</button></div></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>الطالب</th><th>الرقم</th><th>الصف</th><th>المعدل</th><th>الحضور</th><th>الإجراء</th></tr></thead>
+          <tbody id="students-body"></tbody>
+        </table>
+        <div class="pager" id="students-pager"></div>
+      </div>
+    </section>
+
+    <section class="page" id="attendance">
+      <div class="bento" style="grid-template-columns:repeat(3,1fr)">
+        <div class="tile kpi"><div class="ktop"><div class="kic c-emerald"><svg class="ico"><use href="#i-check"/></svg></div></div><div class="knum" id="cnt-pres">26</div><div class="klbl">حاضر</div></div>
+        <div class="tile kpi"><div class="ktop"><div class="kic c-amber"><svg class="ico"><use href="#i-clock"/></svg></div></div><div class="knum" id="cnt-late">2</div><div class="klbl">متأخر</div></div>
+        <div class="tile kpi"><div class="ktop"><div class="kic c-rose"><svg class="ico"><use href="#i-logout"/></svg></div></div><div class="knum" id="cnt-abs">3</div><div class="klbl">غائب</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>الحضور والغياب</h3><div class="sub">السادس الابتدائي - شعبة أ · الأحد 1 حزيران · سجّله أ. سارة المالكي</div></div><div class="right" style="display:flex;gap:10px"><div class="seg"><button class="on">سادس أ</button><button>سادس ب</button><button>خامس أ</button></div><button class="btn ghost" id="att-edit-btn" data-act="att-edit"><svg class="ico"><use href="#i-doc"/></svg> تعديل</button></div></div>
+        <table id="att-table" data-readonly="1">
+          <thead><tr><th>الطالب</th><th>الحالة</th><th>ملاحظة</th></tr></thead>
+          <tbody>
+            <tr><td><div class="person"><span class="av" style="background:#0F766E">أم</span> أحمد محمود</div></td><td><div class="att" data-st="pres"></div></td><td class="av-sub">—</td></tr>
+            <tr><td><div class="person"><span class="av" style="background:#10A99B">فع</span> فاطمة علي</div></td><td><div class="att" data-st="pres"></div></td><td class="av-sub">—</td></tr>
+            <tr><td><div class="person"><span class="av" style="background:#F59E0B">مح</span> محمد حسن</div></td><td><div class="att" data-st="late"></div></td><td class="av-sub">تأخر 10 دقائق</td></tr>
+            <tr><td><div class="person"><span class="av" style="background:#F43F5E">يإ</span> يوسف إبراهيم</div></td><td><div class="att" data-st="abs"></div></td><td class="av-sub">بعذر طبي</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="teachers">
+      <div class="card-head" style="margin:0"><div><h3 style="font-size:20px">المعلمون والموظفون</h3><div class="sub" id="teachers-count">—</div></div><div class="right"><button class="btn"><svg class="ico"><use href="#i-plus"/></svg> إضافة معلم</button></div></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>المعلم</th><th>المادة</th><th>الصفوف</th><th>حصص/يوم</th><th>عدد الطلاب</th><th>الحالة</th></tr></thead>
+          <tbody id="teachers-body"></tbody>
+        </table>
+        <div class="pager" id="teachers-pager"></div>
+      </div>
+    </section>
+
+    <section class="page" id="classes">
+      <div class="card-head" style="margin:0"><div><h3 style="font-size:20px">الصفوف</h3><div class="sub">12 شعبة عبر 6 صفوف</div></div><div class="right"><button class="btn"><svg class="ico"><use href="#i-plus"/></svg> إضافة صف</button></div></div>
+      <div class="ccards" id="classes-wrap"></div>
+    </section>
+
+    <section class="page" id="calendar">
+      <div class="row2">
+        <div class="card">
+          <div class="card-head"><div><h3>حزيران 2026</h3><div class="sub">التقويم المدرسي · الأحد – الخميس</div></div><div class="right seg"><button class="on">شهر</button><button>أسبوع</button></div></div>
+          <div class="cal">
+            <div class="dow">الأحد</div><div class="dow">الإثنين</div><div class="dow">الثلاثاء</div><div class="dow">الأربعاء</div><div class="dow">الخميس</div><div class="dow we">الجمعة</div><div class="dow we">السبت</div>
+            <div class="day">26</div><div class="day">27</div><div class="day">28<div class="ev ev-i">اختبار</div></div><div class="day">29</div><div class="day">30</div><div class="day we">1</div><div class="day we">2</div>
+            <div class="day today">3<div class="ev">اجتماع</div></div><div class="day">4<div class="ev ev-t">رحلة</div></div><div class="day">5</div><div class="day">6<div class="ev ev-a">إملاء</div></div><div class="day">7</div><div class="day we">8</div><div class="day we">9</div>
+            <div class="day">10</div><div class="day">11</div><div class="day">12<div class="ev ev-i">نتائج</div></div><div class="day">13</div><div class="day">14</div><div class="day we">15</div><div class="day we">16</div>
+          </div>
+        </div>
+        <div class="card evlist">
+          <div class="card-head"><div><h3>الفعاليات القادمة</h3></div><div class="right"><button class="btn"><svg class="ico"><use href="#i-plus"/></svg> فعالية</button></div></div>
+          <div class="ev-row"><div class="dt" style="background:rgba(15,118,110,.1);color:var(--indigo-d)"><b>3</b><span>حزيران</span></div><div><b style="font-weight:800">اجتماع أولياء الأمور</b><div class="av-sub">5:00 مساءً · القاعة الكبرى</div></div></div>
+          <div class="ev-row"><div class="dt" style="background:rgba(245,158,11,.12);color:#8a5a00"><b>4</b><span>حزيران</span></div><div><b style="font-weight:800">رحلة المتحف الوطني</b><div class="av-sub">السادس الابتدائي</div></div></div>
+          <div class="ev-row"><div class="dt" style="background:rgba(217,119,6,.12);color:#8a5a00"><b>6</b><span>حزيران</span></div><div><b style="font-weight:800">اختبار الإملاء</b><div class="av-sub">اللغة العربية</div></div></div>
+          <div class="ev-row"><div class="dt" style="background:rgba(244,63,94,.1);color:#a11d3a"><b>15</b><span>حزيران</span></div><div><b style="font-weight:800">عطلة نصف السنة</b><div class="av-sub">إجازة المدرسة</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="fees">
+      <div class="bento">
+        <div class="tile kpi"><div class="ktop"><div class="kic c-emerald"><svg class="ico"><use href="#i-card"/></svg></div><span class="trend t-up"><svg class="ico"><use href="#i-up"/></svg>5%</span></div><div class="knum" id="fee-rate">—</div><div class="klbl">نسبة التحصيل</div></div>
+        <div class="tile kpi"><div class="ktop"><div class="kic c-emerald"><svg class="ico"><use href="#i-check"/></svg></div></div><div class="knum" id="fee-full">—</div><div class="klbl">مدفوعة بالكامل</div></div>
+        <div class="tile kpi"><div class="ktop"><div class="kic c-amber"><svg class="ico"><use href="#i-clock"/></svg></div></div><div class="knum" id="fee-part">—</div><div class="klbl">دفعة جزئية</div></div>
+        <div class="tile kpi"><div class="ktop"><div class="kic c-rose"><svg class="ico"><use href="#i-card"/></svg></div></div><div class="knum" id="fee-over">—</div><div class="klbl">غير مدفوعة</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>حالة الرسوم الدراسية</h3><div class="sub" id="fee-collected">—</div></div><div class="right" style="display:flex;gap:10px"><select class="selectbox" id="fee-filter"><option value="">كل الحالات</option><option value="ok">مكتملة</option><option value="warn">جزئية</option><option value="bad">غير مدفوعة</option></select><button class="btn amber" data-act="reminder"><svg class="ico"><use href="#i-mega"/></svg> إرسال تذكير</button></div></div>
+        <table>
+          <thead><tr><th>الطالب</th><th>الصف</th><th>المبلغ</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th></tr></thead>
+          <tbody id="fees-body"></tbody>
+        </table>
+        <div class="pager" id="fees-pager"></div>
+      </div>
+    </section>
+
+    <section class="page" id="announce">
+      <div class="row2">
+        <div class="card">
+          <div class="card-head"><div><h3>الإعلانات</h3><div class="sub">على مستوى المدرسة</div></div></div>
+          <div class="ann"><div class="aic a-em"><svg class="ico"><use href="#i-bus"/></svg></div><div style="flex:1"><b>رحلة مدرسية إلى المتحف الوطني</b><p>تُنظَّم رحلة يوم الأربعاء، يُرجى إرسال إذن ولي الأمر قبل الثلاثاء.</p></div><time>قبل ساعة</time></div>
+          <div class="ann"><div class="aic a-am"><svg class="ico"><use href="#i-cal"/></svg></div><div style="flex:1"><b>اجتماع أولياء الأمور</b><p>اجتماع الفصل يوم الخميس الساعة 5 مساءً في القاعة الكبرى.</p></div><time>أمس</time></div>
+          <div class="ann"><div class="aic a-em"><svg class="ico"><use href="#i-trophy"/></svg></div><div style="flex:1"><b>تهنئة لأوائل الشهر</b><p>مبارك للطلاب المتميزين في مسابقة القراءة لهذا الشهر.</p></div><time>قبل يومين</time></div>
+        </div>
+        <div class="card compose">
+          <div class="card-head"><div><h3>إعلان جديد</h3></div></div>
+          <textarea placeholder="اكتب نص الإعلان…"></textarea>
+          <div class="seg" style="margin-top:14px;width:fit-content"><button class="on">كل المدرسة</button><button>المعلمون</button><button>أولياء الأمور</button></div>
+          <button class="btn" style="margin-top:16px;width:100%;justify-content:center"><svg class="ico"><use href="#i-mega"/></svg> نشر الإعلان</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="reports">
+      <div class="card-head" style="margin:0"><div><h3 style="font-size:20px">التقارير</h3><div class="sub">تقارير قابلة للتصدير</div></div></div>
+      <div class="ccards">
+        <div class="ccard"><div class="aic a-em" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-cal"/></svg></div><h3>تقرير الحضور</h3><div class="t">حضور وغياب جميع الصفوف خلال الفصل.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+        <div class="ccard"><div class="aic a-em" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-chart"/></svg></div><h3>تقرير الأداء</h3><div class="t">معدلات الطلاب والمراحل والمقارنات.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+        <div class="ccard"><div class="aic a-am" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-card"/></svg></div><h3>تقرير الرسوم</h3><div class="t">حالة التحصيل والمدفوعات المتأخرة.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+        <div class="ccard"><div class="aic a-em" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-users"/></svg></div><h3>تقرير التسجيل</h3><div class="t">أعداد الطلاب الجدد والتوزيع على المراحل.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+        <div class="ccard"><div class="aic a-em" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-teacher"/></svg></div><h3>تقرير المعلمين</h3><div class="t">الأنصبة والمواد والصفوف لكل معلم.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+        <div class="ccard"><div class="aic a-em" style="width:46px;height:46px;margin-bottom:10px"><svg class="ico" style="width:22px;height:22px"><use href="#i-grid"/></svg></div><h3>التقرير الشامل</h3><div class="t">ملخص تنفيذي كامل لحالة المدرسة.</div><button class="btn" style="margin-top:14px;width:100%;justify-content:center"><svg class="ico"><use href="#i-tray"/></svg> تصدير PDF</button></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+  const meta={
+    overview:["مرحبًا، أ. حسن 👋","مدرسة النور الدولية · الأحد 1 حزيران 2026"],
+    students:["الطلاب","إدارة الطلاب وتعيينهم للصفوف"],
+    attendance:["الحضور والغياب","تسجيل الحضور اليومي"],
+    teachers:["المعلمون والموظفون","إدارة هيئة التدريس"],
+    classes:["الصفوف","نظرة على جميع الصفوف"],
+    calendar:["التقويم والفعاليات","الجدول المدرسي والمناسبات"],
+    fees:["الرسوم الدراسية","متابعة التحصيل والمدفوعات"],
+    announce:["الإعلانات","تواصل مع المدرسة بأكملها"],
+    reports:["التقارير","تقارير قابلة للتصدير"]
+  };
+  document.querySelectorAll(".nav-item[data-p]").forEach(function(it){it.addEventListener("click",function(){
+    const p=it.dataset.p;
+    document.querySelectorAll(".nav-item").forEach(function(n){n.classList.remove("active");});it.classList.add("active");
+    document.querySelectorAll(".page").forEach(function(s){s.classList.remove("show");});
+    const el=document.getElementById(p);el.classList.add("show");
+    document.getElementById("pageTitle").textContent=meta[p][0];document.getElementById("pageSub").textContent=meta[p][1];
+    el.style.animation="none";el.offsetHeight;el.style.animation="";window.scrollTo({top:0,behavior:"smooth"});
+  });});
+</script>
+<script src="app.js?v=1"></script>
+<script>
+  (function(){
+    var tsec=document.getElementById('teachers');
+    if(tsec)tsec.querySelectorAll('tbody tr').forEach(function(r){r.style.cursor='pointer';r.addEventListener('click',function(){
+      var nm=r.querySelector('.person div div');var c=r.querySelectorAll('td');
+      modal({title:nm?nm.textContent:'المعلم',sub:'ملف عضو هيئة التدريس',cancel:false,okText:'إغلاق',
+        body:'<div style="font-size:13.5px;color:#3F4A47;line-height:2.1;text-align:right">المادة: <b>'+(c[1]?c[1].textContent:'')+'</b><br>الصفوف: <b>'+(c[2]?c[2].textContent:'')+'</b><br>عدد الطلاب: <b>'+(c[3]?c[3].textContent:'')+'</b><br>متوسط أداء صفوفه: <b>82%</b></div>'});});});
+    var csec=document.getElementById('classes');
+    if(csec)csec.querySelectorAll('.ccard').forEach(function(card){card.style.cursor='pointer';card.addEventListener('click',function(){
+      var h=card.querySelector('h3');var st=card.querySelector('.stat b');
+      modal({title:h?h.textContent:'الصف',cancel:false,okText:'إغلاق',
+        body:'<div style="font-size:13.5px;color:#3F4A47;line-height:2.1;text-align:right">عدد الطلاب: <b>'+(st?st.textContent:'')+'</b><br>عدد المواد: <b>6</b><br>أعلى طالب: <b>نور الدين (95)</b><br>نسبة الحضور: <b>93%</b></div>'});});});
+    var calsec=document.getElementById('calendar');
+    if(calsec)calsec.querySelectorAll('.day').forEach(function(d){var ev=d.querySelector('.ev');if(!ev)return;d.style.cursor='pointer';d.addEventListener('click',function(){
+      modal({title:ev.textContent.trim(),sub:'فعالية في التقويم المدرسي',cancel:false,okText:'إغلاق',body:'<div style="font-size:13.5px;color:#3F4A47;line-height:2;text-align:right">سيتم تذكير المعنيين تلقائيًا.</div>'});});});
+  })();
+</script>
+</body>
+</html>

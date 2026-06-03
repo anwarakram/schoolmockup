@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>سكولار — ملف الطالب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  svg{display:block;}
+  .ico{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;}
+
+  :root{
+    --indigo:#0F766E;--indigo-d:#0B5A53;--mint:#F59E0B;--violet:#10A99B;--rose:#F43F5E;--gold:#F59E0B;
+    --green:#16A34A;--amber:#D97706;--red:#E11D48;
+    --ink:#0E1020;--body:#3A3D52;--muted:#7A7E96;--faint:#A9ADC4;
+    --bg:#F7F9F8;--panel:#FFFFFF;--wash:#F1F5F3;
+    --sh-sm:0 0 0 1px rgba(20,22,55,.05),0 1px 2px rgba(20,22,55,.04);
+    --sh:0 0 0 1px rgba(20,22,55,.05),0 2px 4px rgba(40,42,80,.04),0 12px 28px -10px rgba(40,42,80,.14);
+    --sh-glow:0 8px 24px -6px rgba(15,118,110,.4);
+    --r:18px;--font:"Tajawal",-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-.005em;
+    background:radial-gradient(800px 480px at 100% -8%,rgba(15,118,110,.07),transparent 60%),radial-gradient(700px 460px at -6% 102%,rgba(245,158,11,.06),transparent 58%),var(--bg);background-attachment:fixed;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 34px 56px;}
+  .back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;font-size:13.5px;margin-bottom:18px;}
+  .back:hover{color:var(--indigo);}
+
+  .hero{background:linear-gradient(135deg,var(--indigo),var(--violet) 70%,var(--mint));border-radius:24px;padding:30px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--sh-glow);margin-bottom:18px;}
+  .hero::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.12);top:-120px;left:-80px;}
+  .hero-row{display:flex;align-items:center;gap:22px;position:relative;z-index:2;flex-wrap:wrap;}
+  .hero .photo{width:96px;height:96px;border-radius:26px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;font-size:38px;font-weight:900;flex:0 0 96px;}
+  .hero h1{font-size:30px;font-weight:900;letter-spacing:-.02em;}
+  .hero .meta{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap;font-size:13.5px;font-weight:600;opacity:.92;}
+  .hero .meta span{display:flex;align-items:center;gap:6px;}
+  .hero .acts{margin-right:auto;display:flex;gap:10px;}
+  .hbtn{border:0;cursor:pointer;font-family:var(--font);font-weight:800;font-size:13.5px;padding:10px 17px;border-radius:11px;background:#fff;color:var(--indigo-d);}
+  .hbtn.outline{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);}
+
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start;}
+  .col{display:flex;flex-direction:column;gap:18px;}
+  .card{background:var(--panel);border-radius:var(--r);padding:22px;box-shadow:var(--sh-sm);}
+  .card h3{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px;}
+  .card .sub{color:var(--muted);font-size:12.5px;font-weight:600;}
+  .card-head{display:flex;align-items:center;margin-bottom:18px;}
+  .card-head .right{margin-right:auto;}
+
+  .ministats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .ms{background:var(--panel);border-radius:14px;padding:16px;box-shadow:var(--sh-sm);text-align:center;}
+  .ms b{font-size:24px;font-weight:900;display:block;letter-spacing:-.02em;}
+  .ms span{color:var(--muted);font-size:12px;font-weight:600;margin-top:4px;display:block;}
+
+  .seg{display:flex;background:var(--wash);border-radius:10px;padding:3px;gap:2px;}
+  .seg button{border:0;background:transparent;font-family:var(--font);font-weight:700;font-size:12px;color:var(--muted);padding:6px 13px;border-radius:7px;cursor:pointer;}
+  .seg button.on{background:#fff;color:var(--ink);box-shadow:var(--sh-sm);}
+
+  .subj{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid rgba(20,22,55,.05);}
+  .subj:first-child{border-top:0;}
+  .subj .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:19px;flex:0 0 40px;}
+  .subj .nm{font-weight:700;font-size:14px;}
+  .subj .track{flex:1;height:8px;background:var(--wash);border-radius:8px;overflow:hidden;}
+  .subj .track i{display:block;height:100%;border-radius:8px;}
+  .subj .sc{font-weight:900;font-size:14px;width:38px;text-align:left;}
+
+  .ringwrap{display:flex;align-items:center;gap:20px;}
+  .ring-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;}
+  .ring-center b{font-size:26px;font-weight:900;}.ring-center small{display:block;color:var(--muted);font-size:11px;font-weight:600;}
+  .att-legend span{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--body);margin-bottom:10px;}
+  .att-legend i{width:10px;height:10px;border-radius:3px;}
+
+  .info-row{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid rgba(20,22,55,.05);font-size:13.5px;}
+  .info-row:first-child{border-top:0;}
+  .info-row span{color:var(--muted);font-weight:600;}.info-row b{font-weight:700;}
+
+  .feebar{height:10px;background:var(--wash);border-radius:8px;overflow:hidden;margin:12px 0 8px;}
+  .feebar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--mint));border-radius:8px;}
+
+  .tl{position:relative;padding-right:22px;}
+  .tl::before{content:"";position:absolute;right:6px;top:6px;bottom:6px;width:2px;background:var(--wash);}
+  .tl .item{position:relative;padding:0 0 18px;}
+  .tl .item:last-child{padding-bottom:0;}
+  .tl .item::before{content:"";position:absolute;right:-22px;top:3px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:var(--sh-sm);}
+  .tl .item.g::before{background:var(--green);}.tl .item.a::before{background:var(--amber);}.tl .item.i::before{background:var(--indigo);}
+  .tl .item b{font-size:13.5px;font-weight:700;}
+  .tl .item p{color:var(--muted);font-size:12.5px;font-weight:500;margin-top:2px;}
+  .tl .item time{color:var(--faint);font-size:11.5px;font-weight:700;}
+
+  .pill{display:inline-block;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:800;}
+  .p-ok{background:rgba(22,163,104,.1);color:var(--green);}.p-warn{background:rgba(217,146,27,.12);color:var(--amber);}
+
+  @media(max-width:900px){
+    html,body{overflow-x:hidden;max-width:100%;}
+    .grid{grid-template-columns:1fr;}
+    .ministats{grid-template-columns:repeat(2,1fr);}
+    .wrap{padding:20px 16px 48px;}
+    .hero{padding:24px 20px;}
+    .hero h1{font-size:24px;}
+    .hero .photo{width:74px;height:74px;flex:0 0 74px;font-size:30px;}
+
+    .hero .acts{margin-right:0;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+    .hero .acts::-webkit-scrollbar{display:none;}
+    .hbtn{flex:0 0 auto;white-space:nowrap;padding:9px 14px;font-size:12.5px;}
+    .hero-row{gap:16px;}
+    .card,.hero{min-width:0;max-width:100%;}
+  }
+  @media(max-width:480px){.ministats{grid-template-columns:1fr;}}
+  @media print{
+    body{background:#fff!important;}
+    .back,.acts{display:none!important;}
+    .wrap{max-width:100%;padding:0;}
+    .hero{box-shadow:none;color:#0F1B18;background:#fff!important;border:1px solid #ccc;}
+    .hero::after{display:none;}
+    .hero .photo{background:#0F766E;}
+    .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M21 9v5"/><path d="M7 11v4c0 1 2.5 2.5 5 2.5s5-1.5 5-2.5v-4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.5a3 3 0 010 5.6"/><path d="M19 19c0-2.2-1-3.8-2.5-4.6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></symbol>
+  <symbol id="i-teacher" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M4 21h16M9 21v-4h6v4M8 9h2M14 9h2M8 13h2M14 13h2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M6.5 15h4"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4l9 4V6l-9 4z"/><path d="M13 7.5a4 4 0 010 9"/><path d="M6 14v3.5a1.5 1.5 0 003 0V15"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19a1.5 1.5 0 003 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M3 12h11M7 8l-4 4 4 4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.8L19 9.5l-4.2 2.7L13 17l-1-4.8L7 9.5l4.2-1.7z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M5 14l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M5 10l7 7 7-7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M3 11h18M7 17v2M17 17v2"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M9 16h6M10 20h4M12 13v3"/></symbol>
+  <symbol id="i-tray" viewBox="0 0 24 24"><path d="M12 4v10M8 11l4 4 4-4"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+</svg>
+<div class="wrap">
+  <a class="back" href="index.html">← العودة إلى قائمة الطلاب</a>
+
+  <div class="hero">
+    <div class="hero-row">
+      <div class="photo">أم</div>
+      <div>
+        <h1>أحمد محمود علي</h1>
+        <div class="meta">
+          <span><svg class="ico"><use href="#i-doc"/></svg> 2026104</span><span><svg class="ico"><use href="#i-building"/></svg> السادس الابتدائي - شعبة أ</span><span><svg class="ico"><use href="#i-doc"/></svg> المرحلة الابتدائية</span><span><svg class="ico"><use href="#i-cal"/></svg> مسجّل منذ 2023</span>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="hbtn" data-act="print-report"><svg class="ico"><use href="#i-tray"/></svg> طباعة التقرير</button>
+        <button class="hbtn outline" data-act="send-report"><svg class="ico"><use href="#i-tray"/></svg> إرسال لولي الأمر</button>
+        <button class="hbtn outline" data-act="edit-student"><svg class="ico"><use href="#i-doc"/></svg> تعديل</button>
+        <button class="hbtn outline" data-act="add-note"><svg class="ico"><use href="#i-doc"/></svg> ملاحظة</button>
+        <button class="hbtn outline" data-act="message-guardian"><svg class="ico"><use href="#i-mega"/></svg> مراسلة</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ministats" style="margin-bottom:18px">
+    <div class="ms"><b style="color:var(--indigo)">92</b><span>المعدل العام</span></div>
+    <div class="ms"><b style="color:var(--green)">96%</b><span>نسبة الحضور</span></div>
+    <div class="ms"><b style="color:var(--gold)">3</b><span>المرتبة في الصف</span></div>
+    <div class="ms"><b style="color:var(--mint)">6</b><span>المواد</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+
+      <div class="card">
+        <div class="card-head"><div><h3>تطور المعدل</h3><div class="sub">خلال الفصول الدراسية</div></div><div class="right seg"><button class="on">هذا العام</button><button>السنوات</button></div></div>
+        <svg viewBox="0 0 640 240" width="100%" height="240">
+          <defs>
+            <linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0F766E" stop-opacity=".22"/><stop offset="100%" stop-color="#0F766E" stop-opacity="0"/></linearGradient>
+            <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#0F766E"/></linearGradient>
+          </defs>
+          <g stroke="rgba(20,22,55,.05)" stroke-width="1" font-family="Tajawal" font-size="11" fill="#A9ADC4" font-weight="700">
+            <line x1="40" y1="30" x2="620" y2="30"/><text x="588" y="24">100</text>
+            <line x1="40" y1="90" x2="620" y2="90"/><line x1="40" y1="150" x2="620" y2="150"/><line x1="40" y1="210" x2="620" y2="210"/>
+          </g>
+          <path d="M70,150 L180,120 L290,130 L400,90 L510,70 L600,55 L600,220 L70,220 Z" fill="url(#area)"/>
+          <path d="M70,150 L180,120 L290,130 L400,90 L510,70 L600,55" fill="none" stroke="url(#line)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#fff" stroke="#0F766E" stroke-width="3"><circle cx="180" cy="120" r="4.5"/><circle cx="400" cy="90" r="4.5"/></g>
+          <g fill="#F59E0B" stroke="#fff" stroke-width="3"><circle cx="600" cy="55" r="6.5"/></g>
+          <g font-family="Tajawal" font-size="12" fill="#7A7E96" font-weight="700" text-anchor="middle">
+            <text x="70" y="236">الشهر 1</text><text x="180" y="236">الشهر 2</text><text x="290" y="236">الشهر 3</text><text x="400" y="236">الشهر 4</text><text x="510" y="236">الشهر 5</text><text x="600" y="236">الآن</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>الأداء حسب المادة</h3><div class="sub">الفصل الثاني</div></div></div>
+        <div class="subj"><div class="ic" style="background:rgba(15,118,110,.1)"><svg class="ico"><use href="#i-grid"/></svg></div><div class="nm" style="width:90px">الرياضيات</div><div class="track"><i style="width:95%;background:var(--green)"></i></div><div class="sc" style="color:var(--green)">95</div></div>
+        <div class="subj"><div class="ic" style="background:rgba(245,158,11,.1)"><svg class="ico"><use href="#i-grid"/></svg></div><div class="nm" style="width:90px">العلوم</div><div class="track"><i style="width:90%;background:var(--green)"></i></div><div class="sc" style="color:var(--green)">90</div></div>
+        <div class="subj"><div class="ic" style="background:rgba(232,163,61,.12)"><svg class="ico"><use href="#i-doc"/></svg></div><div class="nm" style="width:90px">اللغة العربية</div><div class="track"><i style="width:93%;background:var(--green)"></i></div><div class="sc" style="color:var(--green)">93</div></div>
+        <div class="subj"><div class="ic" style="background:rgba(242,92,122,.1)"><svg class="ico"><use href="#i-doc"/></svg></div><div class="nm" style="width:90px">الإنكليزية</div><div class="track"><i style="width:84%;background:var(--amber)"></i></div><div class="sc" style="color:var(--amber)">84</div></div>
+        <div class="subj"><div class="ic" style="background:rgba(16,169,155,.1)"><svg class="ico"><use href="#i-building"/></svg></div><div class="nm" style="width:90px">التربية الإسلامية</div><div class="track"><i style="width:97%;background:var(--green)"></i></div><div class="sc" style="color:var(--green)">97</div></div>
+        <div class="subj"><div class="ic" style="background:rgba(22,163,104,.1)"><svg class="ico"><use href="#i-grid"/></svg></div><div class="nm" style="width:90px">الحاسب</div><div class="track"><i style="width:88%;background:var(--green)"></i></div><div class="sc" style="color:var(--green)">88</div></div>
+      </div>
+    </div>
+
+    <div class="col">
+
+      <div class="card">
+        <div class="card-head"><div><h3>الحضور</h3><div class="sub">هذا الفصل</div></div></div>
+        <div class="ringwrap">
+          <div style="position:relative;width:130px;height:130px;flex:0 0 130px">
+            <svg viewBox="0 0 42 42" width="130" height="130" style="transform:rotate(-90deg)">
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(20,22,55,.06)" stroke-width="5"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#16A34A" stroke-width="5" stroke-dasharray="96 4" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-center"><div><b>96%</b><small>حاضر</small></div></div>
+          </div>
+          <div class="att-legend">
+            <span><i style="background:var(--green)"></i> حاضر · 84 يومًا</span>
+            <span><i style="background:var(--amber)"></i> متأخر · 2 يوم</span>
+            <span><i style="background:var(--red)"></i> غائب · 1 يوم</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>الرسوم الدراسية</h3><div class="sub">الفصل الثاني 2026</div></div><div class="right"><span class="pill p-ok">مكتملة</span></div></div>
+        <div class="feebar"><i style="width:100%"></i></div>
+        <div class="info-row"><span>المبلغ الكلي</span><b>2,500,000 د.ع</b></div>
+        <div class="info-row"><span>المدفوع</span><b style="color:var(--green)">2,500,000 د.ع</b></div>
+        <div class="info-row"><span>المتبقي</span><b>0 د.ع</b></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>ولي الأمر</h3></div></div>
+        <div class="info-row"><span>الاسم</span><b>محمود علي</b></div>
+        <div class="info-row"><span>صلة القرابة</span><b>الأب</b></div>
+        <div class="info-row"><span>الجوال</span><b>0770 123 4567</b></div>
+        <div class="info-row"><span>البريد</span><b>mahmoud@email.com</b></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>السجل والملاحظات</h3></div></div>
+        <div class="tl">
+          <div class="item g"><b>تفوق في اختبار الرياضيات</b><p>حصل على 95/100 في اختبار الوحدة الثالثة.</p><time>22 أيار</time></div>
+          <div class="item i"><b>مشاركة في مسابقة القراءة</b><p>مثّل الصف في المسابقة الشهرية.</p><time>16 أيار</time></div>
+          <div class="item a"><b>تأخر صباحي</b><p>وصل متأخرًا 10 دقائق — تم إبلاغ ولي الأمر.</p><time>10 أيار</time></div>
+          <div class="item g"><b>شهادة سلوك مثالي</b><p>منحته إدارة المدرسة شهادة تقدير.</p><time>1 أيار</time></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>
