@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(python3 -m http.server 8000 --bind 127.0.0.1)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/login.html)",
+      "Bash(open \"http://127.0.0.1:8000/login.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/student-portal.html\")",
+      "Bash(open \"http://127.0.0.1:8000/student-portal.html\")",
+      "Bash(open \"http://127.0.0.1:8000/student-portal.html?v=$\\(date +%s\\)\")",
+      "Bash(node -c /Users/mac/Downloads/github/schoolmockup/app.js)"
     ]
   }
 }

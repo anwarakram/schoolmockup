@@ -1,7 +1,7 @@
 
 (function(){
 
-  var KEY='scholar_demo_v1';
+  var KEY='scholar_demo_v2';
   var Store={
     data:null,
     load:function(){
@@ -17,8 +17,10 @@
       if(!this.data._seeded){
         this.data.tasks=[
           {title:'حل تمارين صفحة 45 - 47',subject:'الرياضيات',cls:'السادس الابتدائي - شعبة أ',due:'غدًا',done:false,by:'أ. سارة المالكي'},
+          {title:'حفظ قصيدة (الأبيات 1-10)',subject:'اللغة العربية',cls:'السادس الابتدائي - شعبة أ',due:'غدًا',done:false,by:'أ. منى خليل'},
+          {title:'تلوين الخريطة العربية',subject:'الاجتماعيات',cls:'السادس الابتدائي - شعبة أ',due:'غدًا',done:false,by:'أ. عمّار الدليمي'},
           {title:'تقرير عن دورة الماء',subject:'العلوم',cls:'السادس الابتدائي - شعبة أ',due:'بعد يومين',done:false,by:'أ. خالد عمر'},
-          {title:'حفظ قصيدة (الأبيات 1-10)',subject:'اللغة العربية',cls:'السادس الابتدائي - شعبة أ',due:'الخميس',done:false,by:'أ. منى خليل'}
+          {title:'كتابة كلمات الوحدة 5',subject:'اللغة الإنكليزية',cls:'السادس الابتدائي - شعبة أ',due:'بعد يومين',done:false,by:'أ. رنا السعدي'}
         ];
         this.data.exams=[
           {title:'امتحان الوحدة الرابعة',subject:'الرياضيات',cls:'السادس الابتدائي - شعبة أ',date:'4 حزيران',type:'امتحان',total:100,by:'أ. سارة المالكي'},
@@ -302,27 +304,110 @@
   }
 
   function dueColor(due){if(/مكتمل/.test(due))return '#16A34A';if(/غد|اليوم/.test(due))return '#F43F5E';return '#F59E0B';}
+
+  // emoji per subject so a young kid recognizes it at a glance
+  function subjEmoji(s){
+    s=s||'';
+    if(/رياضي/.test(s))return '➗';
+    if(/علوم/.test(s))return '🔬';
+    if(/عرب/.test(s))return '📖';
+    if(/إنكلي|انكلي|إنجلي/.test(s))return '🔤';
+    if(/إسلام|دين|قرآن/.test(s))return '🕌';
+    if(/اجتماع|تاريخ|جغراف/.test(s))return '🗺️';
+    if(/حاسو|حاسب|كمبيو/.test(s))return '💻';
+    if(/فن/.test(s))return '🎨';
+    if(/رياضة|بدني/.test(s))return '⚽';
+    return '📚';
+  }
+  // order days so TOMORROW comes first, then later days, then today, completed last
+  function dayRank(due){
+    if(/غد/.test(due))return 0;            // غدًا
+    if(/يومين/.test(due))return 1;          // بعد يومين
+    if(/مكتمل|تم التسليم/.test(due))return 99;
+    if(/اليوم/.test(due))return 90;
+    return 5;                               // named weekday etc.
+  }
+  // friendly header color/icon per bucket
+  function dayStyle(due){
+    if(/غد/.test(due))   return {bg:'#F43F5E',ic:'i-bell',  tag:'غدًا'};
+    if(/يومين/.test(due))return {bg:'#F59E0B',ic:'i-clock', tag:'بعد يومين'};
+    if(/مكتمل|تم التسليم/.test(due))return {bg:'#16A34A',ic:'i-check',tag:'مكتمل'};
+    if(/اليوم/.test(due))return {bg:'#0F766E',ic:'i-clock', tag:'اليوم'};
+    return {bg:'#7C3AED',ic:'i-cal', tag:due};               // a weekday name
+  }
+
+  // action word that fits the task type (not always "حلّه")
+  function taskAction(t){
+    var s=(t.title||'')+' '+(t.subject||'');
+    if(/حفظ|احفظ/.test(s))      return 'عليك حفظه';
+    if(/تقرير|اكتب|كتابة|إنشاء|موضوع|بحث/.test(s)) return 'عليك كتابته';
+    if(/تلوين|ارسم|رسم|لوّن/.test(s)) return 'عليك إنجازه';
+    if(/قراءة|اقرأ/.test(s))     return 'عليك قراءته';
+    if(/حل|تمارين|تمرين|مسائل/.test(s)) return 'عليك حلّه';
+    return 'عليك إنجازه';
+  }
+
+  function hwStateHTML(t,idx){
+    if(t.done) return '<button class="hw-check" data-hw="'+idx+'" title="تمّ — اضغط للتراجع"><svg class="ico"><use href="#i-check"/></svg></button>';
+    return '<button class="hw-state hw-todo" data-hw="'+idx+'"><svg class="ico"><use href="#i-doc"/></svg> '+taskAction(t)+'</button>';
+  }
+
   function renderStudentTasks(){
     var list=document.getElementById('s-tasks-list');if(!list)return;
     var d=Store.load().tasks;list.innerHTML='';
     var empty=document.getElementById('s-tasks-empty');if(empty)empty.hidden=d.length>0;
-    d.slice().reverse().forEach(function(t){
-      var row=document.createElement('div');row.className='task';
-      row.innerHTML='<div class="dot" style="background:'+dueColor(t.due)+'"></div>'+
-        '<div><b>'+t.title+'</b><div class="t">'+t.subject+' · '+(t.by||'')+'</div></div>'+
-        '<div class="due">'+t.due+'</div>';
-      list.appendChild(row);
+
+    // bucket tasks by their due label, keeping each task's real store index
+    var buckets={};
+    d.forEach(function(t,i){(buckets[t.due]=buckets[t.due]||[]).push({t:t,i:i});});
+    // sorted unique due labels — tomorrow first
+    var keys=Object.keys(buckets).sort(function(a,b){return dayRank(a)-dayRank(b);});
+
+    keys.forEach(function(due){
+      var st=dayStyle(due);
+      var group=document.createElement('div');group.className='daygroup';
+      var count=buckets[due].length;
+      group.innerHTML=
+        '<div class="day-head">'+
+          '<div class="dh-ic" style="background:'+st.bg+'"><svg class="ico"><use href="#'+st.ic+'"/></svg></div>'+
+          '<div class="dh-t">'+st.tag+'</div>'+
+          '<div class="dh-c" style="background:'+st.bg+'">'+count+' '+(count===1?'واجب':'واجبات')+'</div>'+
+        '</div>';
+      buckets[due].forEach(function(o){
+        var t=o.t;
+        var row=document.createElement('div');row.className='hw'+(t.done?' is-done':'');
+        row.style.setProperty('--hwc', st.bg);
+        row.innerHTML=
+          '<div class="hw-em">'+subjEmoji(t.subject)+'</div>'+
+          '<div class="hw-mid"><b>'+t.title+'</b><div class="hw-sub">'+t.subject+(t.by?' <span class="by">· '+t.by+'</span>':'')+'</div></div>'+
+          hwStateHTML(t,o.i);
+        group.appendChild(row);
+      });
+      list.appendChild(group);
+    });
+
+    // wire the tappable status -> green checkmark (toggle)
+    list.querySelectorAll('[data-hw]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var data=Store.load(); var idx=+btn.dataset.hw;
+        var task=data.tasks[idx]; if(!task)return;
+        task.done=!task.done; Store.save();
+        renderStudentTasks();
+      });
     });
   }
   function renderStudentExams(){
     var wrap=document.getElementById('s-exams-list');if(!wrap)return;
     var d=Store.load().exams;wrap.innerHTML='';
-    d.slice().reverse().forEach(function(ex){
+    // soonest exam first
+    d.slice().sort(function(a,b){return (parseInt(a.date)||99)-(parseInt(b.date)||99);}).forEach(function(ex){
       var isQuiz=ex.type==='كويز';
       var card=document.createElement('div');card.className='ecard';
-      card.innerHTML='<div class="em '+(isQuiz?'i-mint':'i-indigo')+'"><svg class="ico"><use href="#'+(isQuiz?'i-doc':'i-grid')+'"/></svg></div>'+
+      card.style.setProperty('--ec', isQuiz?'#F59E0B':'#0F766E');
+      card.innerHTML='<div class="em">'+subjEmoji(ex.subject)+'</div>'+
         '<h3>'+ex.title+'</h3><div class="t">'+ex.subject+'</div>'+
-        '<div class="r"><span>التاريخ</span><b>'+ex.date+'</b></div><div class="r"><span>الدرجة</span><b>'+ex.total+'</b></div>';
+        '<div class="r"><span>📅 موعده</span><span class="pillD">'+ex.date+'</span></div>'+
+        '<div class="r"><span>'+(isQuiz?'كويز قصير':'امتحان')+'</span><b>'+ex.total+' درجة</b></div>';
       wrap.appendChild(card);
     });
   }
