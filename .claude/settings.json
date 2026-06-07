@@ -8,7 +8,15 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/student-portal.html\")",
       "Bash(open \"http://127.0.0.1:8000/student-portal.html\")",
       "Bash(open \"http://127.0.0.1:8000/student-portal.html?v=$\\(date +%s\\)\")",
-      "Bash(node -c /Users/mac/Downloads/github/schoolmockup/app.js)"
+      "Bash(node -c /Users/mac/Downloads/github/schoolmockup/app.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/schoolLogo.png\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/a-of-smiling-saudi-arabian-thumbnail-27319.webp\")",
+      "Bash(sips -g pixelWidth -g pixelHeight a-of-smiling-saudi-arabian-thumbnail-27319.webp)",
+      "Bash(sips -s format png a-of-smiling-saudi-arabian-thumbnail-27319.webp --out /tmp/student_src.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /tmp/student_src.png)",
+      "Bash(sips -c 290 260 student_src.png --out student_crop.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight student_crop.png)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/student.webp\")"
     ]
   }
 }

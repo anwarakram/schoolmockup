@@ -461,12 +461,14 @@
   .prof-head>*{position:relative;z-index:1;}
   .prof-school{position:absolute;top:clamp(16px,2vw,22px);left:clamp(16px,2vw,24px);z-index:1;display:flex;align-items:center;gap:9px;
     background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);border-radius:13px;padding:7px 13px;backdrop-filter:blur(6px);}
-  .prof-school .ls{width:30px;height:30px;border-radius:9px;background:#fff;display:grid;place-items:center;}
+  .prof-school .ls{width:30px;height:30px;border-radius:9px;background:#fff;display:grid;place-items:center;overflow:hidden;}
+  .prof-school .ls img{width:100%;height:100%;object-fit:contain;padding:3px;}
   .prof-school .ls .ico{width:18px;height:18px;stroke:var(--indigo);stroke-width:1.9;}
   .prof-school b{font-size:13px;font-weight:900;}
   .prof-avatar{width:clamp(84px,11vw,104px);height:clamp(84px,11vw,104px);border-radius:26px;flex:0 0 auto;overflow:hidden;
     background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;box-shadow:0 12px 26px -10px rgba(0,0,0,.3);}
   .prof-avatar svg{width:52%;height:52%;stroke:#fff;stroke-width:1.5;fill:none;opacity:.92;}
+  .prof-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
   .prof-id h1{font-size:clamp(22px,2.8vw,29px);font-weight:900;letter-spacing:-.025em;line-height:1.15;}
   .prof-id .pchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
   .prof-id .pchip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
@@ -552,6 +554,12 @@
   .bar-logo:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 26px -8px rgba(15,118,110,.6);}
   .bar-logo:active{transform:scale(.95);}
 
+  /* logo buttons showing the actual school logo image */
+  .menu-logo.has-img,.bar-logo.has-img{background:#fff;box-shadow:0 0 0 1px rgba(20,22,55,.06),0 8px 20px -8px rgba(20,22,55,.22);overflow:hidden;}
+  .menu-logo.has-img img,.bar-logo.has-img img{width:100%;height:100%;object-fit:contain;padding:7px;display:block;}
+  .bar-logo.has-img img{padding:6px;}
+  .menu-logo.has-img:hover,.bar-logo.has-img:hover{box-shadow:0 0 0 1px rgba(20,22,55,.08),0 12px 26px -8px rgba(20,22,55,.3);}
+
   @media(max-width:820px){
     .menu-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(150px,auto);min-height:0;}
     .tile.hero{grid-column:1 / -1;}
@@ -609,7 +617,7 @@
 <!-- ===== Student menu grid (first screen, no nav bar) ===== -->
 <section class="menuscreen show" id="s-menu">
   <div class="menu-head">
-    <button class="menu-logo" id="profile-btn" title="ملفّي الشخصي" style="border:0;cursor:pointer;padding:0"><svg class="ico"><use href="#i-cap"/></svg></button>
+    <button class="menu-logo has-img" id="profile-btn" title="ملفّي الشخصي" style="border:0;cursor:pointer;padding:0"><img src="schoolLogo.png" alt="شعار المدرسة"></button>
     <div class="ht" id="profile-greet" style="cursor:pointer"><b>أهلاً أحمد 👋</b><span>السادس الابتدائي - شعبة أ · اختر من القائمة</span></div>
     <a href="login.html" class="hlogout"><svg class="ico"><use href="#i-logout"/></svg> خروج</a>
   </div>
@@ -674,16 +682,16 @@
   <div class="backbar">
     <button class="backbtn" id="s-back"><svg class="ico" style="transform:scaleX(-1)"><use href="#i-back"/></svg> رجوع</button>
     <span class="bt" id="s-title">القائمة</span>
-    <button class="bar-logo" id="bar-logo" title="ملفّي الشخصي"><svg class="ico"><use href="#i-cap"/></svg></button>
+    <button class="bar-logo has-img" id="bar-logo" title="ملفّي الشخصي"><img src="schoolLogo.png" alt="شعار المدرسة"></button>
   </div>
 
   <section class="page" id="s-home">
     <div class="prof-head">
       <div class="prof-school">
-        <span class="ls"><svg class="ico"><use href="#i-cap"/></svg></span>
-        <b>مدرسة النور الابتدائية</b>
+        <span class="ls"><img src="schoolLogo.png" alt="شعار المدرسة"></span>
+        <b>مدرسة النخبة الأهلية</b>
       </div>
-      <div class="prof-avatar"><svg viewBox="0 0 24 24"><use href="#i-user"/></svg></div>
+      <div class="prof-avatar"><img src="student.webp" alt="صورة الطالب"></div>
       <div class="prof-id">
         <h1>أحمد علي حسين الجبوري</h1>
         <div class="pchips">
@@ -696,7 +704,7 @@
 
     <div class="prof-grid" style="margin-top:16px">
       <div class="pf"><div class="pf-ic"><svg class="ico"><use href="#i-building"/></svg></div>
-        <div class="pf-b"><div class="pf-l">المدرسة</div><div class="pf-v">مدرسة النور الابتدائية</div></div></div>
+        <div class="pf-b"><div class="pf-l">المدرسة</div><div class="pf-v">مدرسة النخبة الأهلية</div></div></div>
 
       <div class="pf"><div class="pf-ic"><svg class="ico"><use href="#i-cap"/></svg></div>
         <div class="pf-b"><div class="pf-l">الصف</div><div class="pf-v">السادس الابتدائي</div></div></div>
@@ -711,7 +719,7 @@
         <div class="pf-b"><div class="pf-l">تاريخ الميلاد</div><div class="pf-v" style="direction:ltr;text-align:right">14 / 03 / 2014</div></div></div>
 
       <div class="pf"><div class="pf-ic"><svg class="ico"><use href="#i-mail"/></svg></div>
-        <div class="pf-b"><div class="pf-l">البريد الإلكتروني</div><div class="pf-v" style="direction:ltr;text-align:right">ahmed.2026104@alnoor.edu.iq</div></div></div>
+        <div class="pf-b"><div class="pf-l">البريد الإلكتروني</div><div class="pf-v" style="direction:ltr;text-align:right">ahmed.2026104@alnukhba.edu.iq</div></div></div>
 
       <div class="pf" style="grid-column:1 / -1" id="pf-phone">
         <div class="pf-ic" style="background:rgba(22,163,74,.1);color:var(--green)"><svg class="ico"><use href="#i-phone"/></svg></div>
