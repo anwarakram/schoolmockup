@@ -53,9 +53,10 @@
   .topbar .hi p{color:var(--muted);font-size:13px;font-weight:600;margin-top:4px;}
   .search{margin-right:auto;display:flex;align-items:center;gap:9px;background:#fff;border-radius:12px;padding:10.5px 14px;width:280px;color:var(--faint);box-shadow:var(--sh-sm);}
   .search input{border:0;outline:0;background:transparent;font-family:var(--font);font-size:13.5px;width:100%;color:var(--ink);font-weight:500;}
-  .ibtn{width:42px;height:42px;border-radius:12px;background:#fff;display:grid;place-items:center;font-size:16px;cursor:pointer;box-shadow:var(--sh-sm);position:relative;transition:.18s;}
-  .ibtn:hover{transform:translateY(-2px);box-shadow:var(--sh);}
-  .ibtn .dot{position:absolute;top:9px;left:10px;width:7px;height:7px;border-radius:50%;background:var(--rose);border:2px solid #fff;}
+  .ibtn{width:44px;height:44px;border-radius:13px;background:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh-sm);position:relative;transition:.18s;color:var(--body);flex:0 0 44px;}
+  .ibtn:hover{transform:translateY(-2px);box-shadow:var(--sh);color:var(--indigo-d);}
+  .ibtn .ico{width:20px;height:20px;stroke-width:1.9;}
+  .ibtn .dot{position:absolute;top:8px;left:9px;width:8px;height:8px;border-radius:50%;background:var(--rose);border:2px solid #fff;}
 
   .content{padding:6px 34px 44px;display:flex;flex-direction:column;gap:18px;}
   .page{display:none;flex-direction:column;gap:18px;animation:fade .5s cubic-bezier(.2,.8,.2,1);}
@@ -93,12 +94,14 @@
   .empty b{font-size:14px;font-weight:800;color:var(--body);}
   .empty p{font-size:12.5px;font-weight:500;margin-top:4px;}
   @media(max-width:1050px){.bento{grid-template-columns:repeat(2,1fr);}.hero{grid-column:span 2;grid-row:span 1;}}
-  .kpi{background:var(--panel);border-radius:var(--r);padding:20px 22px;position:relative;overflow:hidden;transition:.28s;box-shadow:var(--sh-sm);}
+  .kpi{background:var(--panel);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden;transition:.28s;box-shadow:var(--sh-sm);
+    display:flex;align-items:center;gap:14px;}
   .kpi:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);}
-  .kpi .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;margin-bottom:15px;}
+  .kpi .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:13px;flex:0 0 46px;margin:0;}
   .i-indigo{background:rgba(15,118,110,.1);}.i-mint{background:rgba(245,158,11,.1);}.i-gold{background:rgba(232,163,61,.12);}.i-rose{background:rgba(242,92,122,.1);}.i-green{background:rgba(22,163,104,.1);}
-  .kpi .num{font-size:34px;font-weight:900;letter-spacing:-.03em;line-height:1;direction:ltr;}
-  .kpi .lbl{color:var(--muted);font-size:13px;font-weight:600;margin-top:8px;}
+  .kpi .kbody{display:flex;flex-direction:column;}
+  .kpi .num{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1;direction:ltr;}
+  .kpi .lbl{color:var(--muted);font-size:13px;font-weight:700;margin-top:5px;}
 
   .card{background:var(--panel);border-radius:var(--r);padding:22px;box-shadow:var(--sh-sm);}
   .card-head{display:flex;align-items:center;margin-bottom:18px;}
@@ -126,6 +129,55 @@
   .p-ok{background:rgba(22,163,104,.1);color:var(--green);}.p-warn{background:rgba(217,146,27,.12);color:var(--amber);}.p-bad{background:rgba(229,72,77,.1);color:var(--red);}
   .ginput{width:60px;text-align:center;font-family:var(--font);font-weight:800;font-size:14px;border:1.5px solid var(--wash);border-radius:10px;padding:8px;outline:0;transition:.2s;direction:ltr;}
   .ginput:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  /* conduct report: تقدير select + note */
+  /* ===== conduct report (teacher) ===== */
+  .cond-wrap{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
+  /* student picker list */
+  .cond-list{background:var(--panel);border-radius:var(--r);box-shadow:var(--sh-sm);padding:10px;display:flex;flex-direction:column;gap:4px;}
+  .cond-list .clh{padding:10px 12px 6px;font-size:12px;font-weight:800;color:var(--faint);}
+  .cstu{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:.16s;border:0;background:transparent;font-family:var(--font);text-align:right;width:100%;}
+  .cstu:hover{background:var(--wash);}
+  .cstu.on{background:linear-gradient(135deg,rgba(15,118,110,.1),rgba(16,169,155,.08));box-shadow:inset 0 0 0 1.5px rgba(15,118,110,.25);}
+  .cstu .av{width:38px;height:38px;flex:0 0 38px;font-size:13px;}
+  .cstu .cn{flex:1;min-width:0;font-weight:800;font-size:14px;color:var(--ink);}
+  .cstu .tq{flex:0 0 auto;}
+  /* تقدير badges (match student view) */
+  .tq{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;font-weight:900;font-size:12px;white-space:nowrap;}
+  .tq i{width:7px;height:7px;border-radius:50%;}
+  .tq-exc{background:rgba(22,163,74,.1);color:var(--green);} .tq-exc i{background:var(--green);}
+  .tq-vg{background:rgba(15,118,110,.1);color:var(--indigo);} .tq-vg i{background:var(--indigo);}
+  .tq-good{background:rgba(217,146,27,.12);color:var(--amber);} .tq-good i{background:var(--amber);}
+  .tq-mid{background:rgba(232,163,61,.16);color:#9a6700;} .tq-mid i{background:#c98a1e;}
+  .tq-watch{background:rgba(244,63,94,.1);color:var(--red);} .tq-watch i{background:var(--red);}
+  /* editor panel */
+  .cond-edit{background:var(--panel);border-radius:var(--r);box-shadow:var(--sh-sm);padding:24px;}
+  .cond-stu{display:flex;align-items:center;gap:14px;padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid rgba(20,22,55,.07);}
+  .cond-stu .av{width:54px;height:54px;flex:0 0 54px;font-size:18px;border-radius:15px;}
+  .cond-stu b{font-size:19px;font-weight:900;letter-spacing:-.02em;display:block;}
+  .cond-stu .csub{color:var(--muted);font-size:13px;font-weight:700;margin-top:3px;}
+  .cond-label{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:11px;}
+  /* rating segmented control (5 levels) */
+  .qseg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .qseg button{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--wash);background:#fff;border-radius:12px;
+    padding:10px 16px;font-family:var(--font);font-weight:800;font-size:13.5px;color:var(--muted);cursor:pointer;transition:.18s;}
+  .qseg button i{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.4;transition:.18s;}
+  .qseg button:hover{border-color:rgba(20,22,55,.16);}
+  .qseg button.on i{opacity:1;}
+  .qseg button.on{color:#fff;border-color:transparent;box-shadow:0 6px 16px -6px rgba(20,22,55,.3);}
+  .qseg button.on i{background:#fff;}
+  .qseg button[data-q="exc"].on{background:linear-gradient(135deg,#22C55E,#16A34A);}
+  .qseg button[data-q="vg"].on{background:linear-gradient(135deg,#2DD4BF,#0F766E);}
+  .qseg button[data-q="good"].on{background:linear-gradient(135deg,#FBBF24,#D97706);}
+  .qseg button[data-q="mid"].on{background:linear-gradient(135deg,#E8A33D,#b9831f);}
+  .qseg button[data-q="watch"].on{background:linear-gradient(135deg,#FB7185,#E11D48);}
+  .ninput{width:100%;font-family:var(--font);font-weight:600;font-size:14px;line-height:1.6;border:1.5px solid var(--wash);border-radius:13px;padding:13px 15px;outline:0;transition:.2s;color:var(--body);resize:vertical;min-height:84px;}
+  .ninput:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  .ninput::placeholder{color:var(--faint);font-weight:500;}
+  .cond-actions{display:flex;align-items:center;gap:12px;margin-top:22px;}
+  .cond-actions .saved-tag{color:var(--green);font-weight:800;font-size:13px;display:none;align-items:center;gap:6px;}
+  .cond-actions .saved-tag.show{display:inline-flex;}
+  .cond-actions .saved-tag .ico{width:16px;height:16px;}
+  @media(max-width:820px){.cond-wrap{grid-template-columns:1fr;}.cond-list{flex-direction:row;overflow-x:auto;}.cstu{flex:0 0 auto;}}
 
   .ccards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
   .ccard{background:var(--panel);border-radius:var(--r);padding:21px;box-shadow:var(--sh-sm);transition:.28s;position:relative;overflow:hidden;}
@@ -151,11 +203,17 @@
   .task .pmini{width:110px;height:7px;background:var(--wash);border-radius:8px;overflow:hidden;margin-top:6px;}
   .task .pmini i{display:block;height:100%;background:linear-gradient(90deg,var(--indigo),var(--mint));border-radius:8px;}
 
-  .att{display:flex;gap:6px;}
-  .att button{border:0;background:var(--wash);border-radius:9px;width:38px;height:36px;font-size:15px;cursor:pointer;transition:.15s;box-shadow:inset 0 0 0 1px rgba(20,22,55,.06);}
-  .att button.on.pres{background:var(--green);color:#fff;box-shadow:none;}
-  .att button.on.late{background:var(--gold);color:#fff;box-shadow:none;}
-  .att button.on.abs{background:var(--red);color:#fff;box-shadow:none;}
+  /* attendance status: clean segmented control with icon + label */
+  .att{display:inline-flex;gap:4px;background:var(--wash);padding:4px;border-radius:13px;}
+  .att button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:10px;
+    padding:8px 13px;font-family:var(--font);font-weight:800;font-size:13px;color:var(--muted);cursor:pointer;transition:.18s;white-space:nowrap;}
+  .att button .att-ico{display:inline-grid;place-items:center;}
+  .att button .att-ico svg{width:16px;height:16px;display:block;}
+  .att button:hover{color:var(--ink);}
+  .att button.on{color:#fff;box-shadow:0 4px 12px -4px rgba(20,22,55,.3);}
+  .att button.on.pres{background:linear-gradient(135deg,#22C55E,#16A34A);}
+  .att button.on.late{background:linear-gradient(135deg,#FBBF24,#D97706);}
+  .att button.on.abs{background:linear-gradient(135deg,#FB7185,#E11D48);}
 
   .tt{width:100%;border-collapse:separate;border-spacing:7px;}
   .tt th{text-align:center;font-size:11.5px;color:var(--faint);font-weight:800;padding:0 0 4px;}
@@ -198,21 +256,30 @@
     .card-head .right{margin-right:0;flex-wrap:wrap;}
 
     .card{overflow:visible;}
-    table:not(.tt){min-width:0;width:100%;border-collapse:separate;display:block;}
-    table:not(.tt) thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
-    table:not(.tt) tbody{display:block;}
-    table:not(.tt) tbody tr{display:block;border:1px solid rgba(20,22,55,.08);border-radius:14px;
+    table:not(.tt):not(#att-table){min-width:0;width:100%;border-collapse:separate;display:block;}
+    table:not(.tt):not(#att-table) thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+    table:not(.tt):not(#att-table) tbody{display:block;}
+    table:not(.tt):not(#att-table) tbody tr{display:block;border:1px solid rgba(20,22,55,.08);border-radius:14px;
       padding:12px 14px;margin-bottom:10px;background:var(--panel);box-shadow:var(--sh-sm);}
-    table:not(.tt) tbody td{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    table:not(.tt):not(#att-table) tbody td{display:flex;align-items:center;justify-content:space-between;gap:14px;
       border:0!important;padding:7px 0;text-align:left;}
-    table:not(.tt) tbody td+td{border-top:1px solid rgba(20,22,55,.05)!important;}
-    table:not(.tt) tbody td::before{content:attr(data-label);color:var(--muted);font-weight:700;font-size:12px;flex:0 0 auto;text-align:right;}
-    table:not(.tt) tbody td:first-child{font-weight:800;font-size:14.5px;padding-top:0;}
-    table:not(.tt) tbody td:first-child::before{display:none;}
-    table:not(.tt) tbody td .person{gap:10px;}
-    table:not(.tt) tbody td input.ginput{width:64px;text-align:center;}
+    table:not(.tt):not(#att-table) tbody td+td{border-top:1px solid rgba(20,22,55,.05)!important;}
+    table:not(.tt):not(#att-table) tbody td::before{content:attr(data-label);color:var(--muted);font-weight:700;font-size:12px;flex:0 0 auto;text-align:right;}
+    table:not(.tt):not(#att-table) tbody td:first-child{font-weight:800;font-size:14.5px;padding-top:0;}
+    table:not(.tt):not(#att-table) tbody td:first-child::before{display:none;}
+    table:not(.tt):not(#att-table) tbody td .person{gap:10px;}
+    table:not(.tt):not(#att-table) tbody td input.ginput{width:64px;text-align:center;}
 
-    #att-table tbody td .att{justify-content:flex-end;}
+    /* attendance table: clean stacked cards on mobile */
+    #att-table{display:block;width:100%;}
+    #att-table thead{display:none;}
+    #att-table tbody{display:block;}
+    #att-table tbody tr{display:flex;flex-direction:column;gap:10px;border:1px solid rgba(20,22,55,.08);
+      border-radius:14px;padding:13px 14px;margin-bottom:10px;background:var(--panel);box-shadow:var(--sh-sm);}
+    #att-table tbody td{display:block;border:0!important;padding:0;}
+    #att-table tbody td:last-child:not(:nth-child(3)){display:none;}
+    #att-table tbody td .att{width:100%;justify-content:space-between;}
+    #att-table tbody td .att button{flex:1;justify-content:center;}
 
     .tt{min-width:0;width:100%;border-spacing:4px;table-layout:fixed;}
     .tt th{font-size:9.5px;padding:0 0 3px;}
@@ -249,6 +316,8 @@
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
   <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M3 12h11M7 8l-4 4 4 4"/></symbol>
   <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.8L19 9.5l-4.2 2.7L13 17l-1-4.8L7 9.5l4.2-1.7z"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 013 0V11"/><path d="M12 11V4.5a1.5 1.5 0 013 0V11"/><path d="M15 11V6a1.5 1.5 0 013 0v7a6 6 0 01-6 6h-1.5a5 5 0 01-3.6-1.5L4 14a1.6 1.6 0 012.3-2.2L9 14"/><path d="M9 11V8a1.5 1.5 0 00-3 0v4"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7M8 20v-6h8v6"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M5 14l7-7 7 7"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M5 10l7 7 7-7"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -268,6 +337,7 @@
   <div class="nav-item" data-p="t-classes"><span class="ic"><svg class="ico"><use href="#i-building"/></svg></span> صفوفي وجدولي</div>
   <div class="nav-item" data-p="t-tasks"><span class="ic"><svg class="ico"><use href="#i-check"/></svg></span> الواجبات</div>
   <div class="nav-item" data-p="t-exams"><span class="ic"><svg class="ico"><use href="#i-doc"/></svg></span> الاختبارات والكويزات</div>
+  <div class="nav-item" data-p="t-conduct"><span class="ic"><svg class="ico"><use href="#i-hand"/></svg></span> تقرير وضع الطالب</div>
   <div class="side-foot"><div class="av">سم</div><div style="line-height:1.3"><b style="font-size:13.5px">أ. سارة المالكي</b><br><small style="color:var(--muted);font-weight:600;font-size:12px">معلمة الرياضيات</small></div></div>
 </aside>
 
@@ -352,9 +422,9 @@
 
     <section class="page show" id="t-attendance">
       <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-        <div class="kpi"><div class="ic i-green"><span style="color:#16A34A">●</span></div><div class="num" id="cnt-pres">26</div><div class="lbl">حاضر</div></div>
-        <div class="kpi"><div class="ic i-gold"><span style="color:#D97706">●</span></div><div class="num" id="cnt-late">2</div><div class="lbl">متأخر</div></div>
-        <div class="kpi"><div class="ic i-rose"><span style="color:#E11D48">●</span></div><div class="num" id="cnt-abs">3</div><div class="lbl">غائب</div></div>
+        <div class="kpi"><div class="ic i-green"><span style="color:#16A34A">●</span></div><div class="kbody"><div class="num" id="cnt-pres">26</div><div class="lbl">حاضر</div></div></div>
+        <div class="kpi"><div class="ic i-gold"><span style="color:#D97706">●</span></div><div class="kbody"><div class="num" id="cnt-late">2</div><div class="lbl">متأخر</div></div></div>
+        <div class="kpi"><div class="ic i-rose"><span style="color:#E11D48">●</span></div><div class="kbody"><div class="num" id="cnt-abs">3</div><div class="lbl">غائب</div></div></div>
       </div>
       <div class="card">
         <div class="card-head"><div><h3>تسجيل الحضور</h3><div class="sub">السادس الابتدائي - شعبة أ · الأحد 1 حزيران</div></div><div class="right" style="display:flex;gap:10px"><button class="btn ghost" id="att-edit-btn" data-act="att-edit" hidden><svg class="ico"><use href="#i-doc"/></svg> تعديل</button><button class="btn" id="att-submit-btn" data-act="submit-att"><svg class="ico"><use href="#i-check"/></svg> اعتماد الكشف</button></div></div>
@@ -404,18 +474,73 @@
       <div class="ecards" id="t-exams-wrap"></div>
     </section>
 
+    <section class="page" id="t-conduct">
+      <div class="card-head" style="margin:0">
+        <div><h3 style="font-size:20px">تقرير التفاعل والمشاركة الصفّية</h3><div class="sub">الرياضيات · اختر طالبًا وقيّم تفاعله ومشاركته داخل الصف — لا علاقة له بالدرجات</div></div>
+        <div class="right"><div class="seg"><button class="on">سادس أ</button><button>سادس ب</button></div></div>
+      </div>
+
+      <div class="cond-wrap" id="cond-wrap">
+        <!-- student picker -->
+        <div class="cond-list" id="cond-list">
+          <div class="clh">طلاب الصف</div>
+          <button class="cstu on" data-name="أحمد محمود" data-av="أم" data-grad="135deg,#16A34A,#F59E0B" data-q="exc" data-note="متفاعل ويبادر بحلّ التمارين على السبورة.">
+            <span class="av" style="background:linear-gradient(135deg,#16A34A,#F59E0B)">أم</span><span class="cn">أحمد محمود</span><span class="tq tq-exc"><i></i>ممتاز</span>
+          </button>
+          <button class="cstu" data-name="فاطمة علي" data-av="فع" data-grad="135deg,#0F766E,#10A99B" data-q="vg" data-note="منتبهة ومتعاونة، نأمل مشاركة شفهية أكثر.">
+            <span class="av" style="background:linear-gradient(135deg,#0F766E,#10A99B)">فع</span><span class="cn">فاطمة علي</span><span class="tq tq-vg"><i></i>جيد جداً</span>
+          </button>
+          <button class="cstu" data-name="محمد حسن" data-av="مح" data-grad="135deg,#F59E0B,#D97706" data-q="good" data-note="هادئ، يحتاج إلى تشجيع على المشاركة.">
+            <span class="av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">مح</span><span class="cn">محمد حسن</span><span class="tq tq-good"><i></i>جيد</span>
+          </button>
+          <button class="cstu" data-name="نور الدين" data-av="ند" data-grad="135deg,#F59E0B,#16A34A" data-q="exc" data-note="نشيط جداً ويساعد زملاءه.">
+            <span class="av" style="background:linear-gradient(135deg,#F59E0B,#16A34A)">ند</span><span class="cn">نور الدين</span><span class="tq tq-exc"><i></i>ممتاز</span>
+          </button>
+          <button class="cstu" data-name="يوسف إبراهيم" data-av="يإ" data-grad="135deg,#F43F5E,#E11D48" data-q="watch" data-note="قليل المشاركة، نأمل متابعته من الأهل.">
+            <span class="av" style="background:linear-gradient(135deg,#F43F5E,#E11D48)">يإ</span><span class="cn">يوسف إبراهيم</span><span class="tq tq-watch"><i></i>يحتاج متابعة</span>
+          </button>
+        </div>
+
+        <!-- evaluation editor -->
+        <div class="cond-edit">
+          <div class="cond-stu">
+            <span class="av" id="ce-av" style="background:linear-gradient(135deg,#16A34A,#F59E0B)">أم</span>
+            <div><b id="ce-name">أحمد محمود</b><div class="csub">الرياضيات · السادس الابتدائي - شعبة أ</div></div>
+          </div>
+
+          <div class="cond-label">تقدير المشاركة والتفاعل</div>
+          <div class="qseg" id="ce-seg">
+            <button data-q="exc" class="on"><i></i>ممتاز</button>
+            <button data-q="vg"><i></i>جيد جداً</button>
+            <button data-q="good"><i></i>جيد</button>
+            <button data-q="mid"><i></i>متوسط</button>
+            <button data-q="watch"><i></i>يحتاج متابعة</button>
+          </div>
+
+          <div class="cond-label">ملاحظة المعلّم <span style="color:var(--faint);font-weight:600">(اختياري — تظهر لولي الأمر)</span></div>
+          <textarea class="ninput" id="ce-note" placeholder="اكتب ملاحظة عن مشاركة الطالب وتفاعله داخل الصف…">متفاعل ويبادر بحلّ التمارين على السبورة.</textarea>
+
+          <div class="cond-actions">
+            <button class="btn" id="ce-save"><svg class="ico"><use href="#i-save"/></svg> حفظ التقييم</button>
+            <span class="saved-tag" id="ce-saved"><svg class="ico"><use href="#i-check"/></svg> تم حفظ تقييم الطالب</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?build=20260607c"></script>
 <script>
   var meta={
-    "t-home":["مرحبًا، أ. سارة 👋","مدرسة النور الدولية · الأحد 1 حزيران 2026"],
+    "t-home":["مرحبًا، أ. سارة 👋","مدرسة النخبة الأهلية · الأحد 1 حزيران 2026"],
     "t-grades":["رصد الدرجات","إدخال ومراجعة درجات الطلاب"],
     "t-attendance":["تسجيل الحضور","حضور صفك اليوم"],
     "t-classes":["صفوفي وجدولي","نظرة على صفوفك وجدولك"],
     "t-tasks":["الواجبات","الواجبات التي تكلّف بها طلابك"],
-    "t-exams":["الاختبارات والكويزات","إنشاء وتصحيح التقييمات"]
+    "t-exams":["الاختبارات والكويزات","إنشاء وتصحيح التقييمات"],
+    "t-conduct":["تقرير وضع الطالب","تقييم تفاعل الطلاب ومشاركتهم الصفّية"]
   };
   document.querySelectorAll(".nav-item[data-p]").forEach(function(it){it.addEventListener("click",function(){
     var p=it.dataset.p;
@@ -425,6 +550,54 @@
     document.getElementById("pageTitle").textContent=meta[p][0];document.getElementById("pageSub").textContent=meta[p][1];
     window.scrollTo({top:0,behavior:"smooth"});
   });});
+
+  // ===== conduct report (teacher master-detail editor) =====
+  (function(){
+    var Q={exc:['ممتاز','tq-exc'],vg:['جيد جداً','tq-vg'],good:['جيد','tq-good'],mid:['متوسط','tq-mid'],watch:['يحتاج متابعة','tq-watch']};
+    var list=document.getElementById('cond-list');
+    var seg=document.getElementById('ce-seg');
+    var noteEl=document.getElementById('ce-note');
+    var nameEl=document.getElementById('ce-name');
+    var avEl=document.getElementById('ce-av');
+    var savedTag=document.getElementById('ce-saved');
+    if(!list||!seg) return;
+    var current=list.querySelector('.cstu.on');
+
+    function setSeg(q){
+      seg.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.q===q);});
+    }
+    function loadStudent(btn){
+      current=btn;
+      list.querySelectorAll('.cstu').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      nameEl.textContent=btn.dataset.name;
+      avEl.textContent=btn.dataset.av;
+      avEl.style.background='linear-gradient('+btn.dataset.grad+')';
+      setSeg(btn.dataset.q);
+      noteEl.value=btn.dataset.note||'';
+      savedTag.classList.remove('show');
+    }
+    list.querySelectorAll('.cstu').forEach(function(btn){
+      btn.addEventListener('click',function(){ loadStudent(btn); });
+    });
+    seg.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click',function(){ setSeg(b.dataset.q); savedTag.classList.remove('show'); });
+    });
+    noteEl.addEventListener('input',function(){ savedTag.classList.remove('show'); });
+
+    document.getElementById('ce-save').addEventListener('click',function(){
+      if(!current) return;
+      var q=(seg.querySelector('button.on')||{}).dataset?seg.querySelector('button.on').dataset.q:'exc';
+      // persist back into the chosen student's list row
+      current.dataset.q=q;
+      current.dataset.note=noteEl.value;
+      var badge=current.querySelector('.tq');
+      badge.className='tq '+Q[q][1];
+      badge.innerHTML='<i></i>'+Q[q][0];
+      savedTag.classList.add('show');
+      setTimeout(function(){ savedTag.classList.remove('show'); }, 2600);
+    });
+  })();
 </script>
 </body>
 </html>

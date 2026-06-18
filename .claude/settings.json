@@ -16,7 +16,29 @@
       "Bash(sips -g pixelWidth -g pixelHeight /tmp/student_src.png)",
       "Bash(sips -c 290 260 student_src.png --out student_crop.png)",
       "Bash(sips -g pixelWidth -g pixelHeight student_crop.png)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/student.webp\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/student.webp\")",
+      "Bash(open \"http://127.0.0.1:8000/teacher.html?v=$\\(date +%s\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/teacher.html\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?v=$\\(date +%s\\)\")",
+      "Bash(curl -s \"http://127.0.0.1:8000/app.js\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?nocache=$\\(date +%s\\)\")",
+      "Bash(curl -s \"http://127.0.0.1:8000/teacher.html\")",
+      "Bash(curl -s \"http://127.0.0.1:8000/app.js?v=7\")",
+      "Bash(open -na \"Google Chrome\" --args --incognito \"http://127.0.0.1:8000/teacher.html?fresh=$\\(date +%s\\)\")",
+      "Bash(awk 'NR>=475 && NR<=560' teacher.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8000/app.v7.js\")",
+      "Bash(open -na \"Google Chrome\" --args --incognito \"http://127.0.0.1:8000/teacher.html?z=$\\(date +%s\\)\")",
+      "Bash(awk 'NR>=190 && NR<=245 {print NR\": \"$0}' teacher.html)",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?fixed=$\\(date +%s\\)\")",
+      "Bash(curl -sI \"http://127.0.0.1:8000/app.js?v=7\")",
+      "Bash(pkill -9 -f \"http.server\")",
+      "Bash(kill -9 40142)",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?real=$\\(date +%s\\)\")",
+      "Bash(open -na \"Google Chrome\" --args --incognito \"http://127.0.0.1:8000/teacher.html?x=$\\(date +%s\\)\")",
+      "Bash(node -c app.js)",
+      "Bash(curl -s \"http://127.0.0.1:8000/app.js?build=20260607c\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?c=$\\(date +%s\\)\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?cond=$\\(date +%s\\)\")"
     ]
   }
 }

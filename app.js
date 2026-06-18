@@ -145,12 +145,15 @@
   .seg .seg-glider{position:absolute;top:3px;bottom:3px;border-radius:7px;background:#fff;box-shadow:0 0 0 1px rgba(20,22,55,.05),0 1px 2px rgba(20,22,55,.06);transition:right .25s cubic-bezier(.4,0,.2,1),width .25s cubic-bezier(.4,0,.2,1);z-index:0;}
   .seg button{position:relative;z-index:1;}
   .seg button.on{background:transparent!important;box-shadow:none!important;}
-  .att{display:flex;gap:6px;}
-  .att button{border:0;background:#F1F5F3;border-radius:9px;width:38px;height:36px;font-size:15px;cursor:pointer;transition:.15s;box-shadow:inset 0 0 0 1px rgba(20,22,55,.06);}
-  .att button:hover{transform:translateY(-1px);}
-  .att button.on.pres{background:#16A34A;color:#fff;box-shadow:none;}
-  .att button.on.late{background:#D97706;color:#fff;box-shadow:none;}
-  .att button.on.abs{background:#E11D48;color:#fff;box-shadow:none;}
+  .att{display:inline-flex;gap:4px;background:#F1F5F3;padding:4px;border-radius:13px;}
+  .att button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:10px;padding:8px 13px;font-family:"Tajawal",sans-serif;font-weight:800;font-size:13px;color:#7A7E96;cursor:pointer;transition:.18s;white-space:nowrap;line-height:1;}
+  .att button .att-ico{display:inline-grid;place-items:center;}
+  .att button .att-ico svg{width:16px;height:16px;display:block;}
+  .att button:hover{color:#0E1020;}
+  .att button.on{color:#fff;box-shadow:0 4px 12px -4px rgba(20,22,55,.3);}
+  .att button.on.pres{background:linear-gradient(135deg,#22C55E,#16A34A);}
+  .att button.on.late{background:linear-gradient(135deg,#FBBF24,#D97706);}
+  .att button.on.abs{background:linear-gradient(135deg,#FB7185,#E11D48);}
   .att-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;font-family:"Tajawal",sans-serif;font-weight:800;font-size:12.5px;}
   .att-badge .adot{width:7px;height:7px;border-radius:50%;}
   .att-badge.b-pres{background:rgba(22,163,74,.1);color:#16A34A;}.att-badge.b-pres .adot{background:#16A34A;}
@@ -737,8 +740,15 @@
       });
     });
 
-    var clockSvg='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
-    var labels={pres:'✓',late:clockSvg,abs:'✕'};
+    var svgWrap=function(p){return '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';};
+    var icoCheck=svgWrap('<path d="M5 12l5 5 9-10"/>');
+    var icoClock=svgWrap('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
+    var icoX=svgWrap('<path d="M6 6l12 12M18 6L6 18"/>');
+    var labels={
+      pres:'<span class="att-ico">'+icoCheck+'</span><span class="att-lbl">حاضر</span>',
+      late:'<span class="att-ico">'+icoClock+'</span><span class="att-lbl">متأخر</span>',
+      abs:'<span class="att-ico">'+icoX+'</span><span class="att-lbl">غائب</span>'
+    };
     var attBadge={pres:'<span class="att-badge b-pres"><span class="adot"></span>حاضر</span>',
                   late:'<span class="att-badge b-late"><span class="adot"></span>متأخر</span>',
                   abs:'<span class="att-badge b-abs"><span class="adot"></span>غائب</span>'};
