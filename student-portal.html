@@ -662,6 +662,12 @@
       <div class="tsub"><span><span class="v">4</span> إعلانات جديدة</span><span class="arrow"><svg class="ico"><use href="#i-arrow"/></svg></span></div>
     </button>
 
+    <button class="tile" data-go="s-board" style="--c:#0284C7;--c2:#38BDF8">
+      <div class="tic"><svg class="ico"><use href="#i-mega"/></svg></div>
+      <div class="tn">السبورة الذكية</div>
+      <div class="tsub"><span>ملخّصات الدروس وصورها</span><span class="arrow"><svg class="ico"><use href="#i-arrow"/></svg></span></div>
+    </button>
+
     <button class="tile" data-go="s-home" style="--c:#4F46E5;--c2:#6366F1">
       <div class="tic"><svg class="ico"><use href="#i-cap"/></svg></div>
       <div class="tn">ملفّي الشخصي</div>
@@ -915,6 +921,17 @@
     </div>
   </section>
 
+  <section class="page" id="s-board">
+    <div class="card-head" style="margin:0 0 4px"><div><h3>السبورة الذكية</h3><div class="sub">ملخّصات دروسك وصورها — ابحث وارجع إليها وقت ما تحتاج</div></div></div>
+    <div class="bsearch">
+      <svg viewBox="0 0 24 24"><use href="#i-search"/></svg>
+      <input id="s-board-search" placeholder="ابحث في الملخّصات… (العنوان أو المادة)">
+    </div>
+    <div class="bfilters" id="s-board-filters"></div>
+    <div id="s-board-list"></div>
+    <div class="empty" id="s-board-empty" hidden><svg class="ico"><use href="#i-search"/></svg><b>لا توجد نتائج</b><p>جرّب كلمة بحث أخرى أو غيّر المادة.</p></div>
+  </section>
+
   <section class="page" id="s-conduct">
     <!-- report header -->
     <div class="rhead">
@@ -1010,7 +1027,7 @@
 
 </div>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=9"></script>
 <script>
   var menuScreen = document.getElementById('s-menu');
   var content    = document.getElementById('s-content');
@@ -1020,7 +1037,7 @@
   var TITLES = {
     's-home':'ملفّي الشخصي','s-grades':'درجاتي','s-schedule':'جدولي وحضوري',
     's-tasks':'واجبات وكويزات','s-fees':'أقساطي','s-announce':'الإعلانات',
-    's-conduct':'تقرير وضع الطالب'
+    's-conduct':'تقرير وضع الطالب','s-board':'السبورة الذكية'
   };
 
   function openSection(p){

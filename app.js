@@ -1,7 +1,7 @@
 
 (function(){
 
-  var KEY='scholar_demo_v2';
+  var KEY='scholar_demo_v4';
   var Store={
     data:null,
     load:function(){
@@ -27,10 +27,16 @@
           {title:'كويز الكائنات الحية',subject:'العلوم',cls:'السادس الابتدائي - شعبة أ',date:'6 حزيران',type:'كويز',total:10,by:'أ. خالد عمر'},
           {title:'إملاء النصوص',subject:'اللغة العربية',cls:'السادس الابتدائي - شعبة أ',date:'8 حزيران',type:'امتحان',total:20,by:'أ. منى خليل'}
         ];
+        this.data.boards=[
+          {title:'معادلة القطع الناقص وتقاطعه مع القطع المكافئ',subject:'الرياضيات',cls:'السادس الابتدائي - شعبة أ',date:'4 تموز 2026',by:'أ. سارة المالكي',images:['board1.jpg','board2.jpg']},
+          {title:'حل مسائل على القطوع المخروطية',subject:'الرياضيات',cls:'السادس الابتدائي - شعبة أ',date:'3 تموز 2026',by:'أ. سارة المالكي',images:['board3.jpg','board4.jpg','board5.jpg']},
+          {title:'تمارين مراجعة الوحدة الخامسة',subject:'الرياضيات',cls:'السادس الابتدائي - شعبة ب',date:'1 تموز 2026',by:'أ. سارة المالكي',images:['board6.jpg','board7.jpg']}
+        ];
         this.data._seeded=true;
       }
       this.data.tasks=this.data.tasks||[];
       this.data.exams=this.data.exams||[];
+      this.data.boards=this.data.boards||[];
       return this.data;
     },
     save:function(){try{localStorage.setItem(KEY,JSON.stringify(this.load()));}catch(e){}},
@@ -165,6 +171,36 @@
   .pgbtn:hover:not([disabled]){border-color:#0F766E;color:#0F766E;}
   .pgbtn[disabled]{opacity:.4;cursor:not-allowed;}
   .pginfo{font-size:12.5px;font-weight:600;color:#6B7672;}
+  /* ===== السبورة الذكية (smart board) — shared ===== */
+  .bpost{background:#fff;border-radius:18px;box-shadow:0 0 0 1px rgba(20,22,55,.05),0 8px 20px -12px rgba(34,40,85,.2);padding:18px;margin-bottom:16px;}
+  .bpost-head{display:flex;align-items:center;gap:13px;margin-bottom:14px;}
+  .bpost-head .bp-em{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:rgba(15,118,110,.09);flex:0 0 48px;}
+  .bpost-head .bp-t b{font-size:16px;font-weight:900;letter-spacing:-.01em;display:block;color:#0E1020;}
+  .bpost-head .bp-meta{font-size:12.5px;font-weight:700;color:#7A7E96;margin-top:3px;}
+  .bimgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .bimg{border:0;padding:0;cursor:pointer;border-radius:12px;aspect-ratio:3/4;background-size:cover;background-position:center;background-color:#eef1f0;box-shadow:inset 0 0 0 1px rgba(20,22,55,.08);transition:.22s;}
+  .bimg:hover{transform:translateY(-3px);box-shadow:0 12px 24px -10px rgba(20,22,55,.4);}
+  .board-lightbox{position:fixed;inset:0;z-index:200;background:rgba(10,12,20,.86);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px);}
+  .board-lightbox.show{display:flex;}
+  .board-lightbox img{max-width:100%;max-height:92vh;border-radius:12px;box-shadow:0 30px 80px -20px rgba(0,0,0,.7);}
+  .board-lightbox .lb-close{position:absolute;top:18px;left:18px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:20px;cursor:pointer;font-family:"Tajawal",sans-serif;}
+  .board-lightbox .lb-close:hover{background:rgba(255,255,255,.28);}
+  /* student search + filters */
+  .bsearch{display:flex;align-items:center;gap:10px;background:#fff;border-radius:13px;padding:12px 15px;box-shadow:0 0 0 1px rgba(20,22,55,.05),0 4px 8px -6px rgba(34,40,85,.14);margin-bottom:12px;}
+  .bsearch svg{width:18px;height:18px;stroke:#A9ADC4;stroke-width:1.8;fill:none;flex:0 0 18px;}
+  .bsearch input{border:0;outline:0;background:transparent;font-family:"Tajawal",sans-serif;font-size:14px;font-weight:600;width:100%;color:#0E1020;}
+  .bfilters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .bchip{border:0;font-family:"Tajawal",sans-serif;font-weight:800;font-size:13px;color:#7A7E96;background:#EEF2F0;padding:8px 15px;border-radius:20px;cursor:pointer;transition:.16s;}
+  .bchip:hover{color:#0E1020;}
+  .bchip.on{background:linear-gradient(135deg,#0F766E,#10A99B);color:#fff;box-shadow:0 6px 14px -6px rgba(15,118,110,.5);}
+  /* teacher upload button + previews in modal */
+  .upbtn{display:inline-flex;align-items:center;gap:8px;width:100%;justify-content:center;border:2px dashed #C9D2CF;background:#F7FAF9;color:#0F766E;font-family:"Tajawal",sans-serif;font-weight:800;font-size:14px;padding:14px;border-radius:12px;cursor:pointer;transition:.16s;}
+  .upbtn:hover{border-color:#0F766E;background:#eef5f3;}
+  .upgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+  .upgrid:empty{display:none;}
+  .upcell{position:relative;aspect-ratio:3/4;border-radius:10px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(20,22,55,.1);}
+  .uprm{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(10,12,20,.72);color:#fff;font-size:12px;cursor:pointer;font-family:"Tajawal",sans-serif;line-height:1;display:grid;place-items:center;}
+  .uprm:hover{background:#E11D48;}
   `;
   var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
@@ -199,8 +235,9 @@
     box.innerHTML='<h3>'+(opts.title||'')+'</h3>'+(opts.sub?'<div class="msub">'+opts.sub+'</div>':'')+(opts.body||'')+
       '<div class="mrow">'+(opts.cancel===false?'':'<button class="cancel">'+(opts.cancelText||'إلغاء')+'</button>')+
       '<button class="primary">'+(opts.okText||'تأكيد')+'</button></div>';
-    box.querySelector('.primary').onclick=function(){if(opts.onOk)opts.onOk(box);closeModal();if(opts.toast)toast(opts.toast,opts.toastType||'ok');};
+    box.querySelector('.primary').onclick=function(){var r=opts.onOk?opts.onOk(box):undefined;if(r===false)return;closeModal();if(opts.toast)toast(opts.toast,opts.toastType||'ok');};
     var c=box.querySelector('.cancel');if(c)c.onclick=closeModal;
+    if(opts.onOpen)opts.onOpen(box);
     requestAnimationFrame(function(){mb.classList.add('show');});
   }
   function closeModal(){if(mb)mb.classList.remove('show');}
@@ -281,6 +318,46 @@
       var ex={title:title,type:box.querySelector('#ex-y').value,subject:box.querySelector('#ex-s').value,cls:box.querySelector('#ex-c').value,date:(box.querySelector('#ex-d').value||'قريبًا'),total:box.querySelector('#ex-m').value||100,by:'أ. سارة المالكي'};
       Store.push('exams',ex);renderTeacherExams();
     },toast:'تم إنشاء الاختبار — ظهر لدى الطلاب ✓'});}
+  var TEACHER_SUBJECT='الرياضيات';
+  function createBoardModal(){
+    modal({title:'نشر ملخّص درس',sub:'يظهر مباشرةً في «السبورة الذكية» لدى الطلاب.',
+    body:'<div class="mfield"><label>عنوان الدرس</label><input id="bd-t" placeholder="مثال: حل معادلة القطع الناقص"></div>'+
+         '<div class="mfield"><label>الصف</label><select id="bd-c">'+CLASS_OPTS+'</select></div>'+
+         '<div class="mfield"><label>التاريخ</label><input id="bd-d" placeholder="مثال: 5 تموز 2026"></div>'+
+         '<div class="mfield"><label>صور الدرس</label>'+
+           '<button type="button" class="upbtn" id="bd-upbtn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg> إضافة صور من جهازك</button>'+
+           '<input type="file" id="bd-file" accept="image/*" multiple style="display:none">'+
+           '<div class="upgrid" id="bd-previews"></div>'+
+         '</div>',
+    okText:'نشر',onOk:function(box){
+      var title=(box.querySelector('#bd-t').value||'').trim();if(!title)return;
+      var imgs=box.__boardImgs||[];
+      if(!imgs.length){toast('أضف صورة واحدة على الأقل','info');return false;}
+      var b={title:title,subject:TEACHER_SUBJECT,cls:box.querySelector('#bd-c').value,date:(box.querySelector('#bd-d').value||'اليوم'),by:'أ. سارة المالكي',images:imgs};
+      Store.push('boards',b);if(window.ScholarRenderBoards)window.ScholarRenderBoards();
+    },toast:'تم نشر الملخّص في السبورة الذكية ✓',
+    onOpen:function(box){
+      box.__boardImgs=[];
+      var fileInput=box.querySelector('#bd-file');
+      var grid=box.querySelector('#bd-previews');
+      box.querySelector('#bd-upbtn').addEventListener('click',function(){fileInput.click();});
+      fileInput.addEventListener('change',function(){
+        Array.prototype.forEach.call(fileInput.files,function(f){
+          if(!/^image\//.test(f.type))return;
+          var url=URL.createObjectURL(f);
+          box.__boardImgs.push(url);
+          var cell=document.createElement('div');cell.className='upcell';
+          cell.style.backgroundImage='url(\''+url+'\')';
+          var rm=document.createElement('button');rm.type='button';rm.className='uprm';rm.innerHTML='✕';
+          rm.addEventListener('click',function(){
+            var i=box.__boardImgs.indexOf(url);if(i>-1)box.__boardImgs.splice(i,1);
+            cell.remove();
+          });
+          cell.appendChild(rm);grid.appendChild(cell);
+        });
+        fileInput.value='';
+      });
+    }});}
   function renderTeacherTasks(){
     var body=document.getElementById('t-tasks-body');if(!body)return;
     var d=Store.load().tasks;body.innerHTML='';
@@ -415,6 +492,81 @@
     });
   }
 
+  // ===== السبورة الذكية (smart board — lesson summaries) =====
+  function boardImgs(b){
+    return (b.images||[]).map(function(src,i){
+      return '<button class="bimg" data-full="'+src+'" style="background-image:url(\''+src+'\')" aria-label="عرض الصورة"></button>';
+    }).join('');
+  }
+  // teacher: list of posts they published
+  function renderTeacherBoards(){
+    var wrap=document.getElementById('t-board-list');if(!wrap)return;
+    var d=Store.load().boards;wrap.innerHTML='';
+    var empty=document.getElementById('t-board-empty');if(empty)empty.hidden=d.length>0;
+    d.slice().reverse().forEach(function(b){
+      var card=document.createElement('div');card.className='bpost';
+      card.innerHTML=
+        '<div class="bpost-head"><div class="bp-em">'+subjEmoji(b.subject)+'</div>'+
+          '<div class="bp-t"><b>'+b.title+'</b><div class="bp-meta">'+(b.cls||b.subject)+' · '+b.date+' · '+(b.images?b.images.length:0)+' صورة</div></div></div>'+
+        '<div class="bimgs">'+boardImgs(b)+'</div>';
+      wrap.appendChild(card);
+    });
+  }
+  // student: searchable/filterable view
+  function renderStudentBoards(){
+    var wrap=document.getElementById('s-board-list');if(!wrap)return;
+    var d=Store.load().boards.slice().reverse();
+    var q=(document.getElementById('s-board-search')||{}).value||'';
+    q=q.trim();
+    var subj=window.__boardSubj||'الكل';
+    var empty=document.getElementById('s-board-empty');
+    var filtered=d.filter(function(b){
+      if(subj!=='الكل' && b.subject!==subj) return false;
+      if(q){ var hay=(b.title+' '+b.subject+' '+(b.by||'')); if(hay.indexOf(q)===-1) return false; }
+      return true;
+    });
+    wrap.innerHTML='';
+    if(empty)empty.hidden=filtered.length>0;
+    filtered.forEach(function(b){
+      var card=document.createElement('div');card.className='bpost';
+      card.innerHTML=
+        '<div class="bpost-head"><div class="bp-em">'+subjEmoji(b.subject)+'</div>'+
+          '<div class="bp-t"><b>'+b.title+'</b><div class="bp-meta">'+b.subject+' · '+b.date+' · '+(b.by||'')+'</div></div></div>'+
+        '<div class="bimgs">'+boardImgs(b)+'</div>';
+      wrap.appendChild(card);
+    });
+  }
+  // build the subject filter chips for the student board
+  function buildBoardFilters(){
+    var bar=document.getElementById('s-board-filters');if(!bar)return;
+    var subs=['الكل'];
+    Store.load().boards.forEach(function(b){ if(subs.indexOf(b.subject)===-1)subs.push(b.subject); });
+    bar.innerHTML='';
+    subs.forEach(function(s,i){
+      var chip=document.createElement('button');chip.className='bchip'+(i===0?' on':'');chip.textContent=s;
+      chip.addEventListener('click',function(){
+        bar.querySelectorAll('.bchip').forEach(function(x){x.classList.remove('on');});
+        chip.classList.add('on');window.__boardSubj=s;renderStudentBoards();
+      });
+      bar.appendChild(chip);
+    });
+  }
+  // image lightbox (shared)
+  function openLightbox(src){
+    var lb=document.getElementById('board-lightbox');
+    if(!lb){
+      lb=document.createElement('div');lb.id='board-lightbox';lb.className='board-lightbox';
+      lb.innerHTML='<button class="lb-close" aria-label="إغلاق">✕</button><img alt="صورة الدرس">';
+      document.body.appendChild(lb);
+      lb.addEventListener('click',function(e){ if(e.target===lb||e.target.classList.contains('lb-close'))lb.classList.remove('show'); });
+    }
+    lb.querySelector('img').src=src;lb.classList.add('show');
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('.bimg'):null;
+    if(b&&b.dataset.full)openLightbox(b.dataset.full);
+  });
+
   var rosterPager=null;
   function studentTr(r){
     return '<td><div class="person"><span class="av" style="background:'+avColor(r.name)+'">'+initials(r.name)+'</span><div>'+r.name+
@@ -548,8 +700,12 @@
     renderTeacherTasks();renderTeacherExams();
     if(typeof renderStudentTasks==='function')renderStudentTasks();
     if(typeof renderStudentExams==='function')renderStudentExams();
+    renderTeacherBoards();buildBoardFilters();renderStudentBoards();
+    var bsearch=document.getElementById('s-board-search');
+    if(bsearch&&!bsearch.__wired){bsearch.__wired=1;bsearch.addEventListener('input',renderStudentBoards);}
     renderRoster();renderClasses();renderTeachersTable();renderFees();
   }
+  window.ScholarRenderBoards=function(){renderTeacherBoards();buildBoardFilters();renderStudentBoards();};
   function addEventModal(){modal({title:'إضافة فعالية',sub:'أضف موعدًا إلى التقويم المدرسي.',
     body:'<div class="mfield"><label>عنوان الفعالية</label><input placeholder="مثال: يوم رياضي"></div>'+
          '<div class="mfield"><label>التاريخ</label><input type="date"></div>',
@@ -638,6 +794,7 @@
 
       if(act==='create-task'){e.preventDefault();createTaskModal();return;}
       if(act==='create-exam'){e.preventDefault();createExamModal();return;}
+      if(act==='create-board'){e.preventDefault();createBoardModal();return;}
       if(act==='print-report'){e.preventDefault();toast('جارٍ تجهيز الكشف للطباعة…','info');setTimeout(function(){window.print();},300);return;}
       if(act==='submit-att'){e.preventDefault();
         if(window.__setAttMode)window.__setAttMode('view');

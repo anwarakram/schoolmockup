@@ -337,6 +337,7 @@
   <div class="nav-item" data-p="t-classes"><span class="ic"><svg class="ico"><use href="#i-building"/></svg></span> صفوفي وجدولي</div>
   <div class="nav-item" data-p="t-tasks"><span class="ic"><svg class="ico"><use href="#i-check"/></svg></span> الواجبات</div>
   <div class="nav-item" data-p="t-exams"><span class="ic"><svg class="ico"><use href="#i-doc"/></svg></span> الاختبارات والكويزات</div>
+  <div class="nav-item" data-p="t-board"><span class="ic"><svg class="ico"><use href="#i-mega"/></svg></span> السبورة الذكية</div>
   <div class="nav-item" data-p="t-conduct"><span class="ic"><svg class="ico"><use href="#i-hand"/></svg></span> تقرير وضع الطالب</div>
   <div class="side-foot"><div class="av">سم</div><div style="line-height:1.3"><b style="font-size:13.5px">أ. سارة المالكي</b><br><small style="color:var(--muted);font-weight:600;font-size:12px">معلمة الرياضيات</small></div></div>
 </aside>
@@ -474,6 +475,12 @@
       <div class="ecards" id="t-exams-wrap"></div>
     </section>
 
+    <section class="page" id="t-board">
+      <div class="card-head" style="margin:0"><div><h3 style="font-size:20px">السبورة الذكية</h3><div class="sub">انشر ملخّصات الدروس وصورها — يراها الطلاب ويرجعون إليها كملاحظات</div></div><div class="right"><button class="btn" data-act="create-board"><svg class="ico"><use href="#i-plus"/></svg> نشر ملخّص درس</button></div></div>
+      <div id="t-board-list"></div>
+      <div class="empty" id="t-board-empty" hidden><svg class="ico"><use href="#i-mega"/></svg><b>لا توجد ملخّصات بعد</b><p>اضغط «نشر ملخّص درس» لإضافة أول ملخّص.</p></div>
+    </section>
+
     <section class="page" id="t-conduct">
       <div class="card-head" style="margin:0">
         <div><h3 style="font-size:20px">تقرير التفاعل والمشاركة الصفّية</h3><div class="sub">الرياضيات · اختر طالبًا وقيّم تفاعله ومشاركته داخل الصف — لا علاقة له بالدرجات</div></div>
@@ -531,7 +538,7 @@
   </div>
 </main>
 
-<script src="app.js?build=20260607c"></script>
+<script src="app.js?build=20260607d"></script>
 <script>
   var meta={
     "t-home":["مرحبًا، أ. سارة 👋","مدرسة النخبة الأهلية · الأحد 1 حزيران 2026"],
@@ -540,6 +547,7 @@
     "t-classes":["صفوفي وجدولي","نظرة على صفوفك وجدولك"],
     "t-tasks":["الواجبات","الواجبات التي تكلّف بها طلابك"],
     "t-exams":["الاختبارات والكويزات","إنشاء وتصحيح التقييمات"],
+    "t-board":["السبورة الذكية","انشر ملخّصات الدروس وصورها للطلاب"],
     "t-conduct":["تقرير وضع الطالب","تقييم تفاعل الطلاب ومشاركتهم الصفّية"]
   };
   document.querySelectorAll(".nav-item[data-p]").forEach(function(it){it.addEventListener("click",function(){

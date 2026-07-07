@@ -38,7 +38,10 @@
       "Bash(node -c app.js)",
       "Bash(curl -s \"http://127.0.0.1:8000/app.js?build=20260607c\")",
       "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?c=$\\(date +%s\\)\")",
-      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?cond=$\\(date +%s\\)\")"
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?cond=$\\(date +%s\\)\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?board=$\\(date +%s\\)\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/student-portal.html?board=$\\(date +%s\\)\")",
+      "Bash(open -a \"Google Chrome\" \"http://127.0.0.1:8000/teacher.html?u=$\\(date +%s\\)\")"
     ]
   }
 }
